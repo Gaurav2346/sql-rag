@@ -1,0 +1,17 @@
+# Third-party packages this project needs.
+# Install all at once:  pip install -r requirements.txt
+#
+# Everything else the code imports (csv, hashlib, json, os, re,
+# sqlite3, sys, time) is part of Python itself -- no install needed.
+
+openai>=1.40.0                 # talks to the LLM (any provider via OpenAI format)
+python-dotenv>=1.0.0           # loads the API key from the .env file
+chromadb>=0.5.0                # the vector database (stores embeddings)
+sentence-transformers>=3.0.0   # the embedding model (all-MiniLM-L6-v2)
+
+# Planned for later weeks (safe to install now, not yet used):
+sqlglot>=25.0.0                # Week 6 -- SQL safety parsing
+rank-bm25>=0.2.2               # Week 7 -- hybrid keyword search
+streamlit>=1.38.0              # Week 8 -- the web interface
+pandas>=2.0.0                  # Week 9 -- results handling
+matplotlib>=3.8.0              # Week 9 -- ablation charts
