@@ -1,0 +1,24 @@
+# --- SECRETS: never commit API keys ---
+.env                      
+
+# --- machine-specific / regenerated data ---
+.venv/
+venv/
+__pycache__/              
+*.pyc
+
+# --- generated at runtime (recreate by running the scripts) ---
+data/*.db                 
+index/                    
+cache/                    
+logs/                     
+llm_choice.json           
+
+# --- OS / editor noise ---
+.DS_Store                
+Thumbs.db                
+.vscode/
+.idea/
+
+# LLM selection - local configuration
+llm_choice.json
