@@ -56,6 +56,11 @@ _PROVIDERS = {
         "base_url": "https://api.groq.com/openai/v1",
         "key_env": "GROQ_API_KEY",
     },
+    "openrouter": {
+            "base_url": "https://openrouter.ai/api/v1",
+            "key_env": "OPENROUTER_API_KEY",
+    },
+
     "ollama": {
         "base_url": "http://localhost:11434/v1",
         "key_env": "",          # local, no key
@@ -109,6 +114,7 @@ def call_llm(prompt):
         model=CONFIG["llm_model"],
         messages=[{"role": "user", "content": prompt}],
         temperature=0,          # deterministic -- do not change for SQL
+        max_tokens=1024,
     )
 
     # NVIDIA Nemotron is a reasoning model; explicitly disable thinking

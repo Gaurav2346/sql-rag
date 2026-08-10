@@ -20,9 +20,10 @@ PROVIDERS = {
     "nvidia": ("NVIDIA_API_KEY", "nvidia/nemotron-3-ultra-550b-a55b", "NVIDIA Nemotron"),
     "gemini": ("GEMINI_API_KEY", "gemini-3.6-flash","Google Gemini Flash"),
     "openai": ("OPENAI_API_KEY", "gpt-4o-mini","OpenAI GPT-4o-mini"),
-    "deepseek": ("DEEPSEEK_API_KEY", "deepseek-chat", "DeepSeek Chat"),
+    "deepseek": ("DEEPSEEK_API_KEY", "deepseek-v4-flash", "DeepSeek Chat"),
     "groq": ("GROQ_API_KEY", "llama-3.3-70b-versatile","Groq Llama 3.3 70B"),
     "ollama": ("", "qwen2.5-coder:7b","Local Ollama (no key needed)"),
+    "openrouter": ("OPENROUTER_API_KEY", "openai/gpt-5.4-mini","OpenRouter - GPT-5.4 Mini"),
 }
 
 
