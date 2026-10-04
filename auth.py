@@ -3,21 +3,13 @@ import hmac
 import os
 import re
 import secrets
-import smtplib
 import sqlite3
 import time
 from datetime import datetime, timedelta, timezone
-from email.message import EmailMessage
 
 import streamlit as st
-from dotenv import load_dotenv
 
-
-# ============================================================
-# ENV
-# ============================================================
-
-load_dotenv()
+from email_service import send_password_reset_email
 
 
 # ============================================================
@@ -48,7 +40,7 @@ def _conn():
 
     conn = sqlite3.connect(USERS_DB)
 
-    # Existing users table
+    # Users table
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS users (
@@ -84,10 +76,14 @@ def _conn():
 
 
 # ============================================================
-# PASSWORD HASH
+# PASSWORD HASHING
 # ============================================================
 
-def _hash(password: str, salt: bytes) -> str:
+def _hash(
+    password: str,
+    salt: bytes,
+) -> str:
+
     return hashlib.pbkdf2_hmac(
         "sha256",
         password.encode("utf-8"),
@@ -139,6 +135,7 @@ def register_user(
     salt = secrets.token_bytes(16)
 
     try:
+
         with _conn() as conn:
 
             conn.execute(
@@ -183,6 +180,7 @@ def check_login(
 ):
     """
     identifier can be username or email.
+    Returns username on successful login.
     """
 
     identifier = identifier.strip()
@@ -225,12 +223,12 @@ def check_login(
 
 
 # ============================================================
-# OTP GENERATION
+# OTP
 # ============================================================
 
 def generate_otp():
     """
-    Generate secure 6 digit OTP.
+    Generate a secure 6-digit OTP.
     """
 
     return f"{secrets.randbelow(1_000_000):06d}"
@@ -238,117 +236,12 @@ def generate_otp():
 
 def hash_otp(otp):
     """
-    Store only hash of OTP.
+    Hash OTP before storing it.
     """
 
     return hashlib.sha256(
         otp.encode("utf-8")
     ).hexdigest()
-
-
-# ============================================================
-# SEND OTP EMAIL - MAILPIT
-# ============================================================
-
-def send_otp_email(
-    email,
-    otp,
-):
-    """
-    Send OTP through local Mailpit.
-
-    Mailpit:
-        Host: 127.0.0.1
-        Port: 1025
-        No username
-        No password
-        No TLS
-    """
-
-    smtp_host = os.getenv(
-        "SMTP_HOST",
-        "127.0.0.1",
-    )
-
-    smtp_port = int(
-        os.getenv(
-            "SMTP_PORT",
-            "1025",
-        )
-    )
-
-    smtp_username = os.getenv(
-        "SMTP_USERNAME",
-        "",
-    )
-
-    smtp_password = os.getenv(
-        "SMTP_PASSWORD",
-        "",
-    )
-
-    smtp_from = os.getenv(
-        "SMTP_FROM",
-        "hello@example.com",
-    )
-
-    smtp_from_name = os.getenv(
-        "SMTP_FROM_NAME",
-        "Agentic Enterprise Database QA",
-    )
-
-    message = EmailMessage()
-
-    message["Subject"] = (
-        "Password Reset OTP"
-    )
-
-    message["From"] = (
-        f"{smtp_from_name} <{smtp_from}>"
-    )
-
-    message["To"] = email
-
-    message.set_content(
-        f"""
-Hello,
-
-We received a request to reset your password.
-
-Your 6-digit OTP is:
-
-{otp}
-
-This OTP will expire in
-{OTP_EXPIRY_MINUTES} minutes.
-
-If you did not request a password reset,
-you can safely ignore this email.
-
-Regards,
-{smtp_from_name}
-"""
-    )
-
-    # ========================================================
-    # MAILPIT LOCAL SMTP
-    # ========================================================
-
-    with smtplib.SMTP(
-        smtp_host,
-        smtp_port,
-        timeout=20,
-    ) as server:
-
-        # Mailpit local server does NOT require TLS
-        # and does NOT require login.
-
-        # These are intentionally not called:
-        #
-        # server.starttls()
-        # server.login(...)
-
-        server.send_message(message)
 
 
 # ============================================================
@@ -370,6 +263,10 @@ def request_password_reset(email):
 
     with _conn() as conn:
 
+        # ----------------------------------------------------
+        # Find user
+        # ----------------------------------------------------
+
         user = conn.execute(
             """
             SELECT
@@ -381,7 +278,7 @@ def request_password_reset(email):
             (email,),
         ).fetchone()
 
-        # Do not reveal whether email exists
+        # Don't reveal whether email exists
         if not user:
 
             return (
@@ -458,7 +355,7 @@ def request_password_reset(email):
         ).isoformat()
 
         # ----------------------------------------------------
-        # Invalidate old reset requests
+        # Invalidate previous reset requests
         # ----------------------------------------------------
 
         conn.execute(
@@ -494,29 +391,17 @@ def request_password_reset(email):
         )
 
     # --------------------------------------------------------
-    # Send email AFTER storing OTP
+    # Send OTP email
     # --------------------------------------------------------
 
     try:
 
-        send_otp_email(
+        send_password_reset_email(
             email,
             otp,
         )
 
     except Exception as e:
-
-        # Remove OTP if email failed
-        with _conn() as conn:
-
-            conn.execute(
-                """
-                DELETE FROM password_resets
-                WHERE user_id = ?
-                  AND verified_at IS NOT NULL
-                """,
-                (user_id,),
-            )
 
         return (
             False,
@@ -560,6 +445,7 @@ def verify_reset_otp(
                 pr.otp_hash,
                 pr.expires_at,
                 pr.attempts
+
             FROM password_resets pr
 
             INNER JOIN users u
@@ -629,7 +515,7 @@ def verify_reset_otp(
             )
 
         # ----------------------------------------------------
-        # Compare hash
+        # Compare OTP hash
         # ----------------------------------------------------
 
         entered_hash = hash_otp(otp)
@@ -688,6 +574,10 @@ def reset_password(
 
     with _conn() as conn:
 
+        # ----------------------------------------------------
+        # Find reset request
+        # ----------------------------------------------------
+
         row = conn.execute(
             """
             SELECT
@@ -722,7 +612,10 @@ def reset_password(
         expires_at = row[2]
         verified_at = row[3]
 
+        # ----------------------------------------------------
         # Already used
+        # ----------------------------------------------------
+
         if verified_at:
 
             return (
@@ -731,7 +624,10 @@ def reset_password(
                 "has already been used.",
             )
 
+        # ----------------------------------------------------
         # Check expiry again
+        # ----------------------------------------------------
+
         try:
 
             expiry = datetime.fromisoformat(
@@ -755,7 +651,7 @@ def reset_password(
             )
 
         # ----------------------------------------------------
-        # Generate new password hash
+        # Create new password hash
         # ----------------------------------------------------
 
         salt = secrets.token_bytes(16)
@@ -785,7 +681,7 @@ def reset_password(
         )
 
         # ----------------------------------------------------
-        # Mark reset as used
+        # Mark reset request as used
         # ----------------------------------------------------
 
         conn.execute(
@@ -872,8 +768,7 @@ div[data-testid="stFormSubmitButton"] button {
 
     background-size: 250% 250%;
 
-    animation:
-        ombre 6s ease infinite;
+    animation: ombre 6s ease infinite;
 
     transition:
         transform .25s,
@@ -923,8 +818,7 @@ _LOGIN = """
 
     background-size: 500% 500%;
 
-    animation:
-        ombre 20s ease infinite;
+    animation: ombre 20s ease infinite;
 
     color: #fff;
 }
@@ -1214,16 +1108,17 @@ def _forgot_password_page():
 
     st.markdown(
         """
-    <div class="auth-hero">
-        <div class="auth-logo">🔐</div>
-        <h1>Reset Password</h1>
-        <p>Reset your password using a 6-digit email OTP.</p>
-    </div>
-    """,
+<div class="auth-hero">
+    <div class="auth-logo">🔐</div>
+    <h1>Reset Password</h1>
+    <p>Reset your password using a 6-digit email OTP.</p>
+</div>
+""",
         unsafe_allow_html=True,
     )
+
     # --------------------------------------------------------
-    # Initialize reset state
+    # Initialize state
     # --------------------------------------------------------
 
     if "reset_step" not in st.session_state:
@@ -1286,7 +1181,7 @@ def _forgot_password_page():
                     st.error(message)
 
     # ========================================================
-    # STEP 2 - VERIFY OTP
+    # STEP 2 - OTP
     # ========================================================
 
     elif st.session_state.reset_step == 2:
@@ -1314,11 +1209,9 @@ def _forgot_password_page():
 
         if verify:
 
-            ok, result = (
-                verify_reset_otp(
-                    st.session_state.reset_email,
-                    otp,
-                )
+            ok, result = verify_reset_otp(
+                st.session_state.reset_email,
+                otp,
             )
 
             if ok:
@@ -1420,6 +1313,10 @@ def _forgot_password_page():
 
                 st.error(message)
 
+    # ========================================================
+    # BACK TO LOGIN
+    # ========================================================
+
     st.divider()
 
     if st.button(
@@ -1451,7 +1348,7 @@ def _forgot_password_page():
 def _login_page():
 
     # --------------------------------------------------------
-    # Forgot password
+    # Forgot password page
     # --------------------------------------------------------
 
     if st.session_state.get(
@@ -1469,12 +1366,12 @@ def _login_page():
 
     st.markdown(
         """
-    <div class="auth-hero">
-        <div class="auth-logo">🗄️</div>
-        <h1>Agentic Enterprise Database QA</h1>
-        <p>Sign in to ask questions about your database in plain English.</p>
-    </div>
-    """,
+<div class="auth-hero">
+    <div class="auth-logo">🗄️</div>
+    <h1>Agentic Enterprise Database QA</h1>
+    <p>Sign in to ask questions about your database in plain English.</p>
+</div>
+""",
         unsafe_allow_html=True,
     )
 
@@ -1545,7 +1442,6 @@ def _login_page():
                 if user:
 
                     st.session_state.user = user
-
                     st.session_state.fails = 0
 
                     st.rerun()
@@ -1578,7 +1474,7 @@ def _login_page():
                     )
 
         # ----------------------------------------------------
-        # Forgot Password
+        # Forgot password
         # ----------------------------------------------------
 
         st.divider()
@@ -1589,7 +1485,6 @@ def _login_page():
         ):
 
             st.session_state.show_forgot_password = True
-
             st.session_state.reset_step = 1
 
             st.rerun()
@@ -1649,9 +1544,7 @@ def _login_page():
 
 def require_login():
 
-    if not st.session_state.get(
-        "user"
-    ):
+    if not st.session_state.get("user"):
 
         _login_page()
 
@@ -1659,16 +1552,13 @@ def require_login():
 
 
 # ============================================================
-# SIDEBAR
+# SIDEBAR USER
 # ============================================================
 
 def sidebar_user():
 
     st.sidebar.markdown(
-        f"""
-        👤 Signed in as
-        **{st.session_state.user}**
-        """
+        f"👤 Signed in as **{st.session_state.user}**"
     )
 
     if st.sidebar.button(
