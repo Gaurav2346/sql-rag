@@ -5,6 +5,7 @@ import streamlit as st
 
 from config import CONFIG
 from week2 import ask
+from auth import apply_style, require_login, sidebar_user
 
 
 DB = "data/big.db"
@@ -20,6 +21,10 @@ st.set_page_config(
     layout="wide",
 )
 
+
+apply_style()
+require_login()   # shows login/register page and stops until signed in
+sidebar_user()
 
 st.title("Agentic Enterprise Database QA")
 
