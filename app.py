@@ -5,15 +5,23 @@ import streamlit as st
 
 from config import CONFIG
 from week2 import ask
-from auth import apply_style, require_login, sidebar_user
+from auth import (
+    apply_style,
+    require_login,
+    sidebar_user,
+)
 
+
+# ============================================================
+# DATABASE
+# ============================================================
 
 DB = "data/big.db"
 
 
-# ------------------------------------------------------------
-# Streamlit page setup
-# ------------------------------------------------------------
+# ============================================================
+# STREAMLIT PAGE SETUP
+# ============================================================
 
 st.set_page_config(
     page_title="Agentic Enterprise Database QA",
@@ -22,26 +30,36 @@ st.set_page_config(
 )
 
 
+# ============================================================
+# AUTH
+# ============================================================
+
 apply_style()
-require_login()   # shows login/register page and stops until signed in
+
+require_login()
+
 sidebar_user()
 
-st.title("Agentic Enterprise Database QA")
+
+# ============================================================
+# PAGE HEADER
+# ============================================================
+
+st.title(
+    "Agentic Enterprise Database QA"
+)
 
 st.caption(
-    "Natural language querying over an enterprise SQLite database "
-    "using schema retrieval, value retrieval, self-correction, "
-    "SQL safety, hybrid BM25 retrieval, and calibrated abstention."
+    "Natural language querying over an enterprise "
+    "SQLite database using schema retrieval, "
+    "value retrieval, self-correction, SQL safety, "
+    "hybrid BM25 retrieval, and calibrated abstention."
 )
 
 
-# ------------------------------------------------------------
-# Enable completed features
-# ------------------------------------------------------------
-
-# ------------------------------------------------------------
-# Sidebar controls
-# ------------------------------------------------------------
+# ============================================================
+# SIDEBAR
+# ============================================================
 
 st.sidebar.divider()
 
@@ -61,40 +79,55 @@ st.sidebar.caption(
     "Read-only SQL execution"
 )
 
+
+# ============================================================
+# PIPELINE FEATURES
+# ============================================================
+
 st.sidebar.header(
     "Pipeline Features"
 )
+
 
 schema_retrieval = st.sidebar.toggle(
     "Schema Retrieval",
     value=True,
 )
 
+
 value_retrieval = st.sidebar.toggle(
     "Value Retrieval",
     value=True,
 )
+
 
 self_correction = st.sidebar.toggle(
     "Self-Correction",
     value=True,
 )
 
+
 safety_check = st.sidebar.toggle(
     "SQL Safety",
     value=True,
 )
+
 
 hybrid_bm25 = st.sidebar.toggle(
     "Hybrid BM25",
     value=True,
 )
 
+
 abstention = st.sidebar.toggle(
     "Calibrated Abstention",
     value=True,
 )
 
+
+# ============================================================
+# CONFIG UPDATE
+# ============================================================
 
 CONFIG["use_schema_retrieval"] = (
     schema_retrieval
@@ -120,20 +153,16 @@ CONFIG["use_abstention"] = (
     abstention
 )
 
-# Console debugging off inside UI.
 CONFIG["verbose"] = False
 
 
-
-
-
-
-# ------------------------------------------------------------
-# Database
-# ------------------------------------------------------------
+# ============================================================
+# DATABASE CONNECTION
+# ============================================================
 
 @st.cache_resource
 def get_connection():
+
     return sqlite3.connect(
         DB,
         check_same_thread=False,
@@ -143,13 +172,14 @@ def get_connection():
 conn = get_connection()
 
 
-# ------------------------------------------------------------
-# Question input
-# ------------------------------------------------------------
+# ============================================================
+# EXAMPLE QUESTIONS
+# ============================================================
 
 st.subheader(
     "Example Questions"
 )
+
 
 examples = [
     "How many customers do we have?",
@@ -158,13 +188,20 @@ examples = [
     "Which customer spent the most in total?",
 ]
 
+
 if "question_input" not in st.session_state:
+
     st.session_state.question_input = ""
+
 
 example_cols = st.columns(4)
 
+
 for i, (col, example) in enumerate(
-    zip(example_cols, examples)
+    zip(
+        example_cols,
+        examples,
+    )
 ):
 
     with col:
@@ -174,14 +211,29 @@ for i, (col, example) in enumerate(
             key=f"example_{i}",
             use_container_width=True,
         ):
-            st.session_state.question_input = example
+
+            st.session_state.question_input = (
+                example
+            )
+
+
+# ============================================================
+# QUESTION
+# ============================================================
 
 question = st.text_input(
     "Ask a question about the enterprise database",
     key="question_input",
-    placeholder="Example: How many delivered orders are there?",
+    placeholder=(
+        "Example: How many delivered "
+        "orders are there?"
+    ),
 )
 
+
+# ============================================================
+# RUN BUTTON
+# ============================================================
 
 run_button = st.button(
     "Run Query",
@@ -189,9 +241,9 @@ run_button = st.button(
 )
 
 
-# ------------------------------------------------------------
-# Run pipeline
-# ------------------------------------------------------------
+# ============================================================
+# RUN PIPELINE
+# ============================================================
 
 if run_button:
 
@@ -204,7 +256,8 @@ if run_button:
     else:
 
         with st.spinner(
-            "Understanding the question and querying the database..."
+            "Understanding the question and "
+            "querying the database..."
         ):
 
             try:
@@ -215,23 +268,24 @@ if run_button:
                     return_trace=True,
                 )
 
-                # --------------------------------------------
-                # Abstention
-                # --------------------------------------------
+                # ====================================================
+                # ABSTENTION
+                # ====================================================
 
                 if sql == "ABSTAIN":
 
                     st.warning(
                         rows[0][0]
                         if rows
-                        else
-                        "The system is not confident enough "
-                        "to answer this question."
+                        else (
+                            "The system is not confident "
+                            "enough to answer this question."
+                        )
                     )
 
-                # --------------------------------------------
-                # Successful query
-                # --------------------------------------------
+                # ====================================================
+                # SUCCESS
+                # ====================================================
 
                 else:
 
@@ -239,22 +293,36 @@ if run_button:
                         "Query completed successfully."
                     )
 
-                    if CONFIG["use_safety_check"]:
+                    if CONFIG[
+                        "use_safety_check"
+                    ]:
+
                         st.info(
-                        "🛡️ SQL safety validation enabled"
-                    )
+                            "🛡️ SQL safety validation enabled"
+                        )
+
+                    # ------------------------------------------------
+                    # Metrics
+                    # ------------------------------------------------
 
                     metric1, metric2 = st.columns(2)
+
 
                     metric1.metric(
                         "Rows Returned",
                         len(rows),
                     )
 
+
                     metric2.metric(
                         "Approx. Prompt Tokens",
                         tokens,
                     )
+
+
+                    # ------------------------------------------------
+                    # SQL
+                    # ------------------------------------------------
 
                     st.subheader(
                         "Generated SQL"
@@ -264,6 +332,11 @@ if run_button:
                         sql,
                         language="sql",
                     )
+
+
+                    # ------------------------------------------------
+                    # RESULT
+                    # ------------------------------------------------
 
                     st.subheader(
                         "Result"
@@ -287,9 +360,10 @@ if run_button:
                             "The query returned no rows."
                         )
 
-                                        # --------------------------------------------
-                # Agent Trace
-                # --------------------------------------------
+
+                # ====================================================
+                # AGENT TRACE
+                # ====================================================
 
                 st.divider()
 
@@ -298,13 +372,19 @@ if run_button:
                     expanded=False,
                 ):
 
+                    # ------------------------------------------------
+                    # Retrieval Confidence
+                    # ------------------------------------------------
+
                     st.subheader(
                         "Retrieval Confidence"
                     )
 
+
                     confidence = trace.get(
                         "confidence_distance"
                     )
+
 
                     if confidence is not None:
 
@@ -314,13 +394,19 @@ if run_button:
                         )
 
                         st.caption(
-                            "Lower distance indicates a stronger "
-                            "schema match."
+                            "Lower distance indicates "
+                            "a stronger schema match."
                         )
+
+
+                    # ------------------------------------------------
+                    # Abstention Reason
+                    # ------------------------------------------------
 
                     abstention_reason = trace.get(
                         "abstention"
                     )
+
 
                     if abstention_reason:
 
@@ -328,14 +414,21 @@ if run_button:
                             abstention_reason
                         )
 
+
+                    # ------------------------------------------------
+                    # Retrieved Tables
+                    # ------------------------------------------------
+
                     st.subheader(
                         "Retrieved Tables"
                     )
+
 
                     tables = trace.get(
                         "retrieved_tables",
                         [],
                     )
+
 
                     if tables:
 
@@ -343,6 +436,7 @@ if run_button:
                             tables,
                             start=1,
                         ):
+
                             st.write(
                                 f"{i}. `{table}`"
                             )
@@ -353,31 +447,56 @@ if run_button:
                             "No tables retrieved."
                         )
 
+
+                    # ------------------------------------------------
+                    # Retrieved Values
+                    # ------------------------------------------------
+
                     st.subheader(
                         "Retrieved Database Values"
                     )
+
 
                     values = trace.get(
                         "retrieved_values",
                         [],
                     )
 
+
                     if values:
 
                         value_rows = []
 
+
                         for hit in values:
 
-                            value_rows.append({
-                                "Table": hit["table"],
-                                "Column": hit["column"],
-                                "Value": hit["value"],
-                                "Meaning": hit["aliases"],
-                                "Distance": round(
-                                    hit["distance"],
-                                    3,
-                                ),
-                            })
+                            value_rows.append(
+                                {
+                                    "Table": hit[
+                                        "table"
+                                    ],
+
+                                    "Column": hit[
+                                        "column"
+                                    ],
+
+                                    "Value": hit[
+                                        "value"
+                                    ],
+
+                                    "Meaning": hit[
+                                        "aliases"
+                                    ],
+
+                                    "Distance": round(
+                                        hit[
+                                            "distance"
+                                        ],
+                                        3,
+                                    ),
+                                }
+                            )
+
 
                         st.dataframe(
                             pd.DataFrame(
@@ -392,19 +511,27 @@ if run_button:
                             "No value-level matches."
                         )
 
+
+                    # ------------------------------------------------
+                    # Execution Feedback
+                    # ------------------------------------------------
+
                     st.subheader(
                         "Execution Feedback"
                     )
+
 
                     retries = trace.get(
                         "retries",
                         0,
                     )
 
+
                     if retries:
 
                         st.warning(
-                            f"Self-correction retries: {retries}"
+                            f"Self-correction retries: "
+                            f"{retries}"
                         )
 
                     else:
