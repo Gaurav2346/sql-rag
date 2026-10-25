@@ -5,6 +5,7 @@ import streamlit as st
 
 from config import CONFIG
 from week2 import ask
+from demo_cache import get_demo_answer, get_demo_questions
 from auth import (
     apply_style,
     require_login,
@@ -181,40 +182,20 @@ st.subheader(
 )
 
 
-examples = [
-    "How many customers do we have?",
-    "List all customers from Maharashtra.",
-    "How many delivered orders are there?",
-    "Which customer spent the most in total?",
-]
-
+demo_questions = get_demo_questions()
 
 if "question_input" not in st.session_state:
 
     st.session_state.question_input = ""
 
 
-example_cols = st.columns(4)
-
-
-for i, (col, example) in enumerate(
-    zip(
-        example_cols,
-        examples,
+with st.expander("See all 100 optimized demo questions (50 quick, 50 detailed)"):
+    st.markdown(
+        "\n".join(
+            f"{index}. {question}"
+            for index, question in enumerate(demo_questions, start=1)
+        )
     )
-):
-
-    with col:
-
-        if st.button(
-            example,
-            key=f"example_{i}",
-            use_container_width=True,
-        ):
-
-            st.session_state.question_input = (
-                example
-            )
 
 
 # ============================================================
@@ -256,17 +237,32 @@ if run_button:
     else:
 
         with st.spinner(
-            "Understanding the question and "
-            "querying the database..."
+            "Checking the instant-answer cache or querying the database..."
         ):
 
             try:
 
-                rows, cols, sql, tokens, trace = ask(
-                    question,
-                    conn,
-                    return_trace=True,
-                )
+                cached_answer = get_demo_answer(question)
+
+                if cached_answer:
+                    rows = cached_answer["rows"]
+                    cols = cached_answer["columns"]
+                    sql = cached_answer["sql"]
+                    tokens = 0
+                    trace = {
+                        "source": "json_demo_cache",
+                        "abstention": None,
+                        "confidence_distance": None,
+                        "retrieved_tables": [],
+                        "retrieved_values": [],
+                        "retries": 0,
+                    }
+                else:
+                    rows, cols, sql, tokens, trace = ask(
+                        question,
+                        conn,
+                        return_trace=True,
+                    )
 
                 # ====================================================
                 # ABSTENTION
@@ -289,9 +285,14 @@ if run_button:
 
                 else:
 
-                    st.success(
-                        "Query completed successfully."
-                    )
+                    if trace.get("source") == "json_demo_cache":
+                        st.success(
+                            "Optimized response returned from the question cache."
+                        )
+                    else:
+                        st.success(
+                            "Query completed successfully."
+                        )
 
                     if CONFIG[
                         "use_safety_check"
@@ -325,7 +326,9 @@ if run_button:
                     # ------------------------------------------------
 
                     st.subheader(
-                        "Generated SQL"
+                        "Cached SQL"
+                        if trace.get("source") == "json_demo_cache"
+                        else "Generated SQL"
                     )
 
                     st.code(
@@ -379,6 +382,11 @@ if run_button:
                     st.subheader(
                         "Retrieval Confidence"
                     )
+
+                    if trace.get("source") == "json_demo_cache":
+                        st.info(
+                            "The question matched a prepared response, so the app skipped embedding retrieval and the LLM call. New questions continue through the full SQL generation pipeline."
+                        )
 
 
                     confidence = trace.get(

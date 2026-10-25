@@ -1,0 +1,5065 @@
+[
+  {
+    "question": "For each customer state group, show the state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.st_cd ORDER BY total_sales DESC",
+    "columns": [
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        6,
+        3,
+        10,
+        231397.0,
+        38566.17,
+        124000.0,
+        3
+      ],
+      [
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "KA",
+        2,
+        2,
+        6,
+        12495.0,
+        6247.5,
+        8500.0,
+        1
+      ],
+      [
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer state group, show the state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.st_cd ORDER BY order_count DESC",
+    "columns": [
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        6,
+        3,
+        10,
+        231397.0,
+        38566.17,
+        124000.0,
+        3
+      ],
+      [
+        "KA",
+        2,
+        2,
+        6,
+        12495.0,
+        6247.5,
+        8500.0,
+        1
+      ],
+      [
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer state group, show the state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.st_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "MH",
+        6,
+        3,
+        10,
+        231397.0,
+        38566.17,
+        124000.0,
+        3
+      ],
+      [
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        2,
+        2,
+        6,
+        12495.0,
+        6247.5,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer state group, show the state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.st_cd ORDER BY total_units DESC",
+    "columns": [
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        6,
+        3,
+        10,
+        231397.0,
+        38566.17,
+        124000.0,
+        3
+      ],
+      [
+        "KA",
+        2,
+        2,
+        6,
+        12495.0,
+        6247.5,
+        8500.0,
+        1
+      ],
+      [
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer state group, show the state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.st_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        6,
+        3,
+        10,
+        231397.0,
+        38566.17,
+        124000.0,
+        3
+      ],
+      [
+        "KA",
+        2,
+        2,
+        6,
+        12495.0,
+        6247.5,
+        8500.0,
+        1
+      ],
+      [
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer city group, show the city, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT c.city_nm AS city, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.city_nm ORDER BY total_sales DESC",
+    "columns": [
+      "city",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Nagpur",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Mumbai",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Chennai",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Pune",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Bengaluru",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Delhi",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Mysuru",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer city group, show the city, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT c.city_nm AS city, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.city_nm ORDER BY order_count DESC",
+    "columns": [
+      "city",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Mumbai",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Pune",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Nagpur",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Mysuru",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Delhi",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Chennai",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Bengaluru",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer city group, show the city, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT c.city_nm AS city, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.city_nm ORDER BY average_order_amount DESC",
+    "columns": [
+      "city",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Nagpur",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Chennai",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Mumbai",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Bengaluru",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Delhi",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Pune",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Mysuru",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer city group, show the city, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT c.city_nm AS city, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.city_nm ORDER BY total_units DESC",
+    "columns": [
+      "city",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Mysuru",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Pune",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Mumbai",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Nagpur",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Delhi",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Chennai",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Bengaluru",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer city group, show the city, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT c.city_nm AS city, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.city_nm ORDER BY delivered_orders DESC",
+    "columns": [
+      "city",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Pune",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Nagpur",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Mumbai",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Delhi",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Bengaluru",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Mysuru",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Chennai",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each product category group, show the product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd ORDER BY total_sales DESC",
+    "columns": [
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        5,
+        4,
+        7,
+        282500.0,
+        56500.0,
+        124000.0,
+        2
+      ],
+      [
+        "FURN",
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "ACCS",
+        3,
+        3,
+        10,
+        14792.0,
+        4930.67,
+        8400.0,
+        2
+      ]
+    ]
+  },
+  {
+    "question": "For each product category group, show the product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd ORDER BY order_count DESC",
+    "columns": [
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        5,
+        4,
+        7,
+        282500.0,
+        56500.0,
+        124000.0,
+        2
+      ],
+      [
+        "ACCS",
+        3,
+        3,
+        10,
+        14792.0,
+        4930.67,
+        8400.0,
+        2
+      ],
+      [
+        "FURN",
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product category group, show the product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        5,
+        4,
+        7,
+        282500.0,
+        56500.0,
+        124000.0,
+        2
+      ],
+      [
+        "FURN",
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "ACCS",
+        3,
+        3,
+        10,
+        14792.0,
+        4930.67,
+        8400.0,
+        2
+      ]
+    ]
+  },
+  {
+    "question": "For each product category group, show the product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd ORDER BY total_units DESC",
+    "columns": [
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ACCS",
+        3,
+        3,
+        10,
+        14792.0,
+        4930.67,
+        8400.0,
+        2
+      ],
+      [
+        "ELEC",
+        5,
+        4,
+        7,
+        282500.0,
+        56500.0,
+        124000.0,
+        2
+      ],
+      [
+        "FURN",
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product category group, show the product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        5,
+        4,
+        7,
+        282500.0,
+        56500.0,
+        124000.0,
+        2
+      ],
+      [
+        "ACCS",
+        3,
+        3,
+        10,
+        14792.0,
+        4930.67,
+        8400.0,
+        2
+      ],
+      [
+        "FURN",
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each order status group, show the order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY o.stat_cd ORDER BY total_sales DESC",
+    "columns": [
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        3,
+        5,
+        5,
+        9,
+        205297.0,
+        41059.4,
+        124000.0,
+        5
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        70500.0,
+        35250.0,
+        62000.0,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        26995.0,
+        13497.5,
+        23000.0,
+        0
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each order status group, show the order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY o.stat_cd ORDER BY order_count DESC",
+    "columns": [
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        3,
+        5,
+        5,
+        9,
+        205297.0,
+        41059.4,
+        124000.0,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        26995.0,
+        13497.5,
+        23000.0,
+        0
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        70500.0,
+        35250.0,
+        62000.0,
+        0
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each order status group, show the order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY o.stat_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        3,
+        5,
+        5,
+        9,
+        205297.0,
+        41059.4,
+        124000.0,
+        5
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        70500.0,
+        35250.0,
+        62000.0,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        26995.0,
+        13497.5,
+        23000.0,
+        0
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each order status group, show the order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY o.stat_cd ORDER BY total_units DESC",
+    "columns": [
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        3,
+        5,
+        5,
+        9,
+        205297.0,
+        41059.4,
+        124000.0,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        26995.0,
+        13497.5,
+        23000.0,
+        0
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        70500.0,
+        35250.0,
+        62000.0,
+        0
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each order status group, show the order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY o.stat_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        3,
+        5,
+        5,
+        9,
+        205297.0,
+        41059.4,
+        124000.0,
+        5
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        26995.0,
+        13497.5,
+        23000.0,
+        0
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        70500.0,
+        35250.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each order month group, show the order month, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT substr(o.ord_dt,1,7) AS order_month, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY substr(o.ord_dt,1,7) ORDER BY total_sales DESC",
+    "columns": [
+      "order_month",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "2025-07",
+        3,
+        3,
+        8,
+        136495.0,
+        45498.33,
+        124000.0,
+        1
+      ],
+      [
+        "2025-04",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "2025-02",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        1
+      ],
+      [
+        "2025-05",
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "2025-06",
+        2,
+        2,
+        3,
+        19900.0,
+        9950.0,
+        11500.0,
+        1
+      ],
+      [
+        "2025-01",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "2025-03",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each order month group, show the order month, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT substr(o.ord_dt,1,7) AS order_month, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY substr(o.ord_dt,1,7) ORDER BY order_count DESC",
+    "columns": [
+      "order_month",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "2025-07",
+        3,
+        3,
+        8,
+        136495.0,
+        45498.33,
+        124000.0,
+        1
+      ],
+      [
+        "2025-06",
+        2,
+        2,
+        3,
+        19900.0,
+        9950.0,
+        11500.0,
+        1
+      ],
+      [
+        "2025-05",
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "2025-04",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "2025-03",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "2025-02",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        1
+      ],
+      [
+        "2025-01",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each order month group, show the order month, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT substr(o.ord_dt,1,7) AS order_month, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY substr(o.ord_dt,1,7) ORDER BY average_order_amount DESC",
+    "columns": [
+      "order_month",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "2025-04",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "2025-02",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        1
+      ],
+      [
+        "2025-07",
+        3,
+        3,
+        8,
+        136495.0,
+        45498.33,
+        124000.0,
+        1
+      ],
+      [
+        "2025-05",
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "2025-06",
+        2,
+        2,
+        3,
+        19900.0,
+        9950.0,
+        11500.0,
+        1
+      ],
+      [
+        "2025-01",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "2025-03",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each order month group, show the order month, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT substr(o.ord_dt,1,7) AS order_month, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY substr(o.ord_dt,1,7) ORDER BY total_units DESC",
+    "columns": [
+      "order_month",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "2025-07",
+        3,
+        3,
+        8,
+        136495.0,
+        45498.33,
+        124000.0,
+        1
+      ],
+      [
+        "2025-06",
+        2,
+        2,
+        3,
+        19900.0,
+        9950.0,
+        11500.0,
+        1
+      ],
+      [
+        "2025-03",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "2025-05",
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "2025-04",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "2025-02",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        1
+      ],
+      [
+        "2025-01",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each order month group, show the order month, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT substr(o.ord_dt,1,7) AS order_month, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o GROUP BY substr(o.ord_dt,1,7) ORDER BY delivered_orders DESC",
+    "columns": [
+      "order_month",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "2025-07",
+        3,
+        3,
+        8,
+        136495.0,
+        45498.33,
+        124000.0,
+        1
+      ],
+      [
+        "2025-06",
+        2,
+        2,
+        3,
+        19900.0,
+        9950.0,
+        11500.0,
+        1
+      ],
+      [
+        "2025-03",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "2025-02",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        1
+      ],
+      [
+        "2025-01",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "2025-05",
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "2025-04",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer profile group, show the customer name, city, and state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, c.city_nm AS city, c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.cust_id,c.cust_nm,c.city_nm,c.st_cd ORDER BY total_sales DESC",
+    "columns": [
+      "customer_name",
+      "city",
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        "Nagpur",
+        "MH",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Rahul Verma",
+        "Mumbai",
+        "MH",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai",
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Amit Shah",
+        "Pune",
+        "MH",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru",
+        "KA",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "Delhi",
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "Mysuru",
+        "KA",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer profile group, show the customer name, city, and state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, c.city_nm AS city, c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.cust_id,c.cust_nm,c.city_nm,c.st_cd ORDER BY order_count DESC",
+    "columns": [
+      "customer_name",
+      "city",
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        "Mumbai",
+        "MH",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "Pune",
+        "MH",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru",
+        "KA",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai",
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Vikram Singh",
+        "Delhi",
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "Mysuru",
+        "KA",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Arjun Deshmukh",
+        "Nagpur",
+        "MH",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer profile group, show the customer name, city, and state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, c.city_nm AS city, c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.cust_id,c.cust_nm,c.city_nm,c.st_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "customer_name",
+      "city",
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        "Nagpur",
+        "MH",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai",
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "Mumbai",
+        "MH",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru",
+        "KA",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "Delhi",
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "Pune",
+        "MH",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "Mysuru",
+        "KA",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer profile group, show the customer name, city, and state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, c.city_nm AS city, c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.cust_id,c.cust_nm,c.city_nm,c.st_cd ORDER BY total_units DESC",
+    "columns": [
+      "customer_name",
+      "city",
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Kavya Reddy",
+        "Mysuru",
+        "KA",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "Mumbai",
+        "MH",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "Pune",
+        "MH",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "Delhi",
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Arjun Deshmukh",
+        "Nagpur",
+        "MH",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru",
+        "KA",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai",
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer profile group, show the customer name, city, and state code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, c.city_nm AS city, c.st_cd AS state_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM cust_mst c JOIN ord_txn o ON o.cust_id=c.cust_id GROUP BY c.cust_id,c.cust_nm,c.city_nm,c.st_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "customer_name",
+      "city",
+      "state_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        "Mumbai",
+        "MH",
+        3,
+        1,
+        4,
+        93500.0,
+        31166.67,
+        62000.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru",
+        "KA",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "Pune",
+        "MH",
+        2,
+        1,
+        4,
+        13897.0,
+        6948.5,
+        11500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "Delhi",
+        "DL",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Arjun Deshmukh",
+        "Nagpur",
+        "MH",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai",
+        "TN",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Kavya Reddy",
+        "Mysuru",
+        "KA",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each product group, show the product name, category, and unit price, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT p.prod_nm AS product_name, p.cat_cd AS product_category, p.unit_prc AS unit_price, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm,p.cat_cd,p.unit_prc ORDER BY total_sales DESC",
+    "columns": [
+      "product_name",
+      "product_category",
+      "unit_price",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        "ELEC",
+        62000.0,
+        3,
+        3,
+        4,
+        248000.0,
+        82666.67,
+        124000.0,
+        2
+      ],
+      [
+        "LED Monitor 24",
+        "ELEC",
+        11500.0,
+        2,
+        2,
+        3,
+        34500.0,
+        17250.0,
+        23000.0,
+        0
+      ],
+      [
+        "Office Chair",
+        "FURN",
+        8500.0,
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Mechanical Keyboard",
+        "ACCS",
+        4200.0,
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Wireless Mouse",
+        "ACCS",
+        799.0,
+        2,
+        2,
+        8,
+        6392.0,
+        3196.0,
+        3995.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product group, show the product name, category, and unit price, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT p.prod_nm AS product_name, p.cat_cd AS product_category, p.unit_prc AS unit_price, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm,p.cat_cd,p.unit_prc ORDER BY order_count DESC",
+    "columns": [
+      "product_name",
+      "product_category",
+      "unit_price",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        "ELEC",
+        62000.0,
+        3,
+        3,
+        4,
+        248000.0,
+        82666.67,
+        124000.0,
+        2
+      ],
+      [
+        "Wireless Mouse",
+        "ACCS",
+        799.0,
+        2,
+        2,
+        8,
+        6392.0,
+        3196.0,
+        3995.0,
+        1
+      ],
+      [
+        "Office Chair",
+        "FURN",
+        8500.0,
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "LED Monitor 24",
+        "ELEC",
+        11500.0,
+        2,
+        2,
+        3,
+        34500.0,
+        17250.0,
+        23000.0,
+        0
+      ],
+      [
+        "Mechanical Keyboard",
+        "ACCS",
+        4200.0,
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product group, show the product name, category, and unit price, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT p.prod_nm AS product_name, p.cat_cd AS product_category, p.unit_prc AS unit_price, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm,p.cat_cd,p.unit_prc ORDER BY average_order_amount DESC",
+    "columns": [
+      "product_name",
+      "product_category",
+      "unit_price",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        "ELEC",
+        62000.0,
+        3,
+        3,
+        4,
+        248000.0,
+        82666.67,
+        124000.0,
+        2
+      ],
+      [
+        "LED Monitor 24",
+        "ELEC",
+        11500.0,
+        2,
+        2,
+        3,
+        34500.0,
+        17250.0,
+        23000.0,
+        0
+      ],
+      [
+        "Office Chair",
+        "FURN",
+        8500.0,
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Mechanical Keyboard",
+        "ACCS",
+        4200.0,
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Wireless Mouse",
+        "ACCS",
+        799.0,
+        2,
+        2,
+        8,
+        6392.0,
+        3196.0,
+        3995.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product group, show the product name, category, and unit price, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT p.prod_nm AS product_name, p.cat_cd AS product_category, p.unit_prc AS unit_price, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm,p.cat_cd,p.unit_prc ORDER BY total_units DESC",
+    "columns": [
+      "product_name",
+      "product_category",
+      "unit_price",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Wireless Mouse",
+        "ACCS",
+        799.0,
+        2,
+        2,
+        8,
+        6392.0,
+        3196.0,
+        3995.0,
+        1
+      ],
+      [
+        "Laptop 14 inch",
+        "ELEC",
+        62000.0,
+        3,
+        3,
+        4,
+        248000.0,
+        82666.67,
+        124000.0,
+        2
+      ],
+      [
+        "LED Monitor 24",
+        "ELEC",
+        11500.0,
+        2,
+        2,
+        3,
+        34500.0,
+        17250.0,
+        23000.0,
+        0
+      ],
+      [
+        "Office Chair",
+        "FURN",
+        8500.0,
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Mechanical Keyboard",
+        "ACCS",
+        4200.0,
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each product group, show the product name, category, and unit price, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT p.prod_nm AS product_name, p.cat_cd AS product_category, p.unit_prc AS unit_price, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm,p.cat_cd,p.unit_prc ORDER BY delivered_orders DESC",
+    "columns": [
+      "product_name",
+      "product_category",
+      "unit_price",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        "ELEC",
+        62000.0,
+        3,
+        3,
+        4,
+        248000.0,
+        82666.67,
+        124000.0,
+        2
+      ],
+      [
+        "Wireless Mouse",
+        "ACCS",
+        799.0,
+        2,
+        2,
+        8,
+        6392.0,
+        3196.0,
+        3995.0,
+        1
+      ],
+      [
+        "Office Chair",
+        "FURN",
+        8500.0,
+        2,
+        2,
+        2,
+        17000.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Mechanical Keyboard",
+        "ACCS",
+        4200.0,
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "LED Monitor 24",
+        "ELEC",
+        11500.0,
+        2,
+        2,
+        3,
+        34500.0,
+        17250.0,
+        23000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each state and category group, show the state code and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT c.st_cd AS state_code, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.st_cd,p.cat_cd ORDER BY total_sales DESC",
+    "columns": [
+      "state_code",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        "ELEC",
+        4,
+        3,
+        6,
+        220500.0,
+        55125.0,
+        124000.0,
+        2
+      ],
+      [
+        "TN",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "KA",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "MH",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "DL",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "MH",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each state and category group, show the state code and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.st_cd,p.cat_cd ORDER BY order_count DESC",
+    "columns": [
+      "state_code",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        "ELEC",
+        4,
+        3,
+        6,
+        220500.0,
+        55125.0,
+        124000.0,
+        2
+      ],
+      [
+        "DL",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "KA",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "MH",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "MH",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "TN",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each state and category group, show the state code and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT c.st_cd AS state_code, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.st_cd,p.cat_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "state_code",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "TN",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "MH",
+        "ELEC",
+        4,
+        3,
+        6,
+        220500.0,
+        55125.0,
+        124000.0,
+        2
+      ],
+      [
+        "KA",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "MH",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "DL",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "MH",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each state and category group, show the state code and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.st_cd,p.cat_cd ORDER BY total_units DESC",
+    "columns": [
+      "state_code",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        "ELEC",
+        4,
+        3,
+        6,
+        220500.0,
+        55125.0,
+        124000.0,
+        2
+      ],
+      [
+        "KA",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "MH",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "DL",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "MH",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "TN",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each state and category group, show the state code and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT c.st_cd AS state_code, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.st_cd,p.cat_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "state_code",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "MH",
+        "ELEC",
+        4,
+        3,
+        6,
+        220500.0,
+        55125.0,
+        124000.0,
+        2
+      ],
+      [
+        "DL",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "KA",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "MH",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "KA",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "MH",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "TN",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer and category group, show the customer name and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.cust_id,c.cust_nm,p.cat_cd ORDER BY total_sales DESC",
+    "columns": [
+      "customer_name",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        "ELEC",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Rahul Verma",
+        "ELEC",
+        2,
+        1,
+        3,
+        85000.0,
+        42500.0,
+        62000.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Amit Shah",
+        "ELEC",
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "Priya Nair",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Amit Shah",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer and category group, show the customer name and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.cust_id,c.cust_nm,p.cat_cd ORDER BY order_count DESC",
+    "columns": [
+      "customer_name",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        "ELEC",
+        2,
+        1,
+        3,
+        85000.0,
+        42500.0,
+        62000.0,
+        1
+      ],
+      [
+        "Rahul Verma",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "Priya Nair",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ELEC",
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "Sneha Iyer",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Vikram Singh",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Arjun Deshmukh",
+        "ELEC",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer and category group, show the customer name and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.cust_id,c.cust_nm,p.cat_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "customer_name",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        "ELEC",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Sneha Iyer",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "ELEC",
+        2,
+        1,
+        3,
+        85000.0,
+        42500.0,
+        62000.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ELEC",
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "Priya Nair",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Kavya Reddy",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Amit Shah",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each customer and category group, show the customer name and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.cust_id,c.cust_nm,p.cat_cd ORDER BY total_units DESC",
+    "columns": [
+      "customer_name",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Kavya Reddy",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "Rahul Verma",
+        "ELEC",
+        2,
+        1,
+        3,
+        85000.0,
+        42500.0,
+        62000.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Arjun Deshmukh",
+        "ELEC",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Rahul Verma",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "Priya Nair",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ELEC",
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "Sneha Iyer",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each customer and category group, show the customer name and product category, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT c.cust_nm AS customer_name, p.cat_cd AS product_category, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY c.cust_id,c.cust_nm,p.cat_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "customer_name",
+      "product_category",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        "ELEC",
+        2,
+        1,
+        3,
+        85000.0,
+        42500.0,
+        62000.0,
+        1
+      ],
+      [
+        "Priya Nair",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "Amit Shah",
+        "ACCS",
+        1,
+        1,
+        3,
+        2397.0,
+        2397.0,
+        2397.0,
+        1
+      ],
+      [
+        "Vikram Singh",
+        "ACCS",
+        1,
+        1,
+        2,
+        8400.0,
+        8400.0,
+        8400.0,
+        1
+      ],
+      [
+        "Arjun Deshmukh",
+        "ELEC",
+        1,
+        1,
+        2,
+        124000.0,
+        124000.0,
+        124000.0,
+        1
+      ],
+      [
+        "Rahul Verma",
+        "FURN",
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "Amit Shah",
+        "ELEC",
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "Sneha Iyer",
+        "ELEC",
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "Kavya Reddy",
+        "ACCS",
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each category and status group, show the product category and order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total sales amount, highest first.",
+    "sql": "SELECT p.cat_cd AS product_category, o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd,o.stat_cd ORDER BY total_sales DESC",
+    "columns": [
+      "product_category",
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        3,
+        2,
+        2,
+        3,
+        186000.0,
+        93000.0,
+        124000.0,
+        2
+      ],
+      [
+        "ELEC",
+        1,
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "ELEC",
+        2,
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "ELEC",
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "ACCS",
+        3,
+        2,
+        2,
+        5,
+        10797.0,
+        5398.5,
+        8400.0,
+        2
+      ],
+      [
+        "FURN",
+        1,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "FURN",
+        3,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "ACCS",
+        2,
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each category and status group, show the product category and order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by order count, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd,o.stat_cd ORDER BY order_count DESC",
+    "columns": [
+      "product_category",
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ACCS",
+        3,
+        2,
+        2,
+        5,
+        10797.0,
+        5398.5,
+        8400.0,
+        2
+      ],
+      [
+        "ELEC",
+        3,
+        2,
+        2,
+        3,
+        186000.0,
+        93000.0,
+        124000.0,
+        2
+      ],
+      [
+        "ACCS",
+        2,
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "ELEC",
+        1,
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "ELEC",
+        2,
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "ELEC",
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "FURN",
+        1,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "FURN",
+        3,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each category and status group, show the product category and order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by average order amount, highest first.",
+    "sql": "SELECT p.cat_cd AS product_category, o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd,o.stat_cd ORDER BY average_order_amount DESC",
+    "columns": [
+      "product_category",
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ELEC",
+        3,
+        2,
+        2,
+        3,
+        186000.0,
+        93000.0,
+        124000.0,
+        2
+      ],
+      [
+        "ELEC",
+        1,
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "ELEC",
+        2,
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "ELEC",
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "FURN",
+        1,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "FURN",
+        3,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "ACCS",
+        3,
+        2,
+        2,
+        5,
+        10797.0,
+        5398.5,
+        8400.0,
+        2
+      ],
+      [
+        "ACCS",
+        2,
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "For each category and status group, show the product category and order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by total units, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd,o.stat_cd ORDER BY total_units DESC",
+    "columns": [
+      "product_category",
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ACCS",
+        2,
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "ACCS",
+        3,
+        2,
+        2,
+        5,
+        10797.0,
+        5398.5,
+        8400.0,
+        2
+      ],
+      [
+        "ELEC",
+        3,
+        2,
+        2,
+        3,
+        186000.0,
+        93000.0,
+        124000.0,
+        2
+      ],
+      [
+        "ELEC",
+        2,
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "ELEC",
+        1,
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "ELEC",
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "FURN",
+        1,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ],
+      [
+        "FURN",
+        3,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "For each category and status group, show the product category and order status code, the number of orders and customers, total units sold, total sales, average and largest order amount, and delivered-order count; sort by delivered-order count, largest first.",
+    "sql": "SELECT p.cat_cd AS product_category, o.stat_cd AS status_code, COUNT(*) AS order_count, COUNT(DISTINCT o.cust_id) AS customer_count, SUM(o.qty) AS total_units, ROUND(SUM(o.amt),2) AS total_sales, ROUND(AVG(o.amt),2) AS average_order_amount, MAX(o.amt) AS largest_order_amount, SUM(CASE WHEN o.stat_cd=3 THEN 1 ELSE 0 END) AS delivered_orders FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.cat_cd,o.stat_cd ORDER BY delivered_orders DESC",
+    "columns": [
+      "product_category",
+      "status_code",
+      "order_count",
+      "customer_count",
+      "total_units",
+      "total_sales",
+      "average_order_amount",
+      "largest_order_amount",
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        "ACCS",
+        3,
+        2,
+        2,
+        5,
+        10797.0,
+        5398.5,
+        8400.0,
+        2
+      ],
+      [
+        "ELEC",
+        3,
+        2,
+        2,
+        3,
+        186000.0,
+        93000.0,
+        124000.0,
+        2
+      ],
+      [
+        "FURN",
+        3,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        1
+      ],
+      [
+        "ACCS",
+        2,
+        1,
+        1,
+        5,
+        3995.0,
+        3995.0,
+        3995.0,
+        0
+      ],
+      [
+        "ELEC",
+        1,
+        1,
+        1,
+        1,
+        62000.0,
+        62000.0,
+        62000.0,
+        0
+      ],
+      [
+        "ELEC",
+        2,
+        1,
+        1,
+        2,
+        23000.0,
+        23000.0,
+        23000.0,
+        0
+      ],
+      [
+        "ELEC",
+        4,
+        1,
+        1,
+        1,
+        11500.0,
+        11500.0,
+        11500.0,
+        0
+      ],
+      [
+        "FURN",
+        1,
+        1,
+        1,
+        1,
+        8500.0,
+        8500.0,
+        8500.0,
+        0
+      ]
+    ]
+  },
+  {
+    "question": "How many customers are there?",
+    "sql": "SELECT COUNT(*) AS customer_count FROM cust_mst",
+    "columns": [
+      "customer_count"
+    ],
+    "rows": [
+      [
+        7
+      ]
+    ]
+  },
+  {
+    "question": "What are all customer names?",
+    "sql": "SELECT cust_nm AS customer_name FROM cust_mst ORDER BY cust_nm",
+    "columns": [
+      "customer_name"
+    ],
+    "rows": [
+      [
+        "Amit Shah"
+      ],
+      [
+        "Arjun Deshmukh"
+      ],
+      [
+        "Kavya Reddy"
+      ],
+      [
+        "Priya Nair"
+      ],
+      [
+        "Rahul Verma"
+      ],
+      [
+        "Sneha Iyer"
+      ],
+      [
+        "Vikram Singh"
+      ]
+    ]
+  },
+  {
+    "question": "Show customer names and cities.",
+    "sql": "SELECT cust_nm AS customer_name,city_nm AS city FROM cust_mst ORDER BY cust_nm",
+    "columns": [
+      "customer_name",
+      "city"
+    ],
+    "rows": [
+      [
+        "Amit Shah",
+        "Pune"
+      ],
+      [
+        "Arjun Deshmukh",
+        "Nagpur"
+      ],
+      [
+        "Kavya Reddy",
+        "Mysuru"
+      ],
+      [
+        "Priya Nair",
+        "Bengaluru"
+      ],
+      [
+        "Rahul Verma",
+        "Mumbai"
+      ],
+      [
+        "Sneha Iyer",
+        "Chennai"
+      ],
+      [
+        "Vikram Singh",
+        "Delhi"
+      ]
+    ]
+  },
+  {
+    "question": "Who lives in Mumbai?",
+    "sql": "SELECT cust_nm AS customer_name FROM cust_mst WHERE city_nm='Mumbai' ORDER BY cust_nm",
+    "columns": [
+      "customer_name"
+    ],
+    "rows": [
+      [
+        "Rahul Verma"
+      ]
+    ]
+  },
+  {
+    "question": "How many Maharashtra customers are there?",
+    "sql": "SELECT COUNT(*) AS customer_count FROM cust_mst WHERE st_cd='MH'",
+    "columns": [
+      "customer_count"
+    ],
+    "rows": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "question": "Which customers live in Maharashtra?",
+    "sql": "SELECT cust_nm AS customer_name,city_nm AS city FROM cust_mst WHERE st_cd='MH' ORDER BY cust_nm",
+    "columns": [
+      "customer_name",
+      "city"
+    ],
+    "rows": [
+      [
+        "Amit Shah",
+        "Pune"
+      ],
+      [
+        "Arjun Deshmukh",
+        "Nagpur"
+      ],
+      [
+        "Rahul Verma",
+        "Mumbai"
+      ]
+    ]
+  },
+  {
+    "question": "How many Karnataka customers are there?",
+    "sql": "SELECT COUNT(*) AS customer_count FROM cust_mst WHERE st_cd='KA'",
+    "columns": [
+      "customer_count"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "question": "Which cities have customers?",
+    "sql": "SELECT DISTINCT city_nm AS city FROM cust_mst ORDER BY city_nm",
+    "columns": [
+      "city"
+    ],
+    "rows": [
+      [
+        "Bengaluru"
+      ],
+      [
+        "Chennai"
+      ],
+      [
+        "Delhi"
+      ],
+      [
+        "Mumbai"
+      ],
+      [
+        "Mysuru"
+      ],
+      [
+        "Nagpur"
+      ],
+      [
+        "Pune"
+      ]
+    ]
+  },
+  {
+    "question": "How many customers are in each state?",
+    "sql": "SELECT st_cd AS state_code,COUNT(*) AS customers FROM cust_mst GROUP BY st_cd ORDER BY st_cd",
+    "columns": [
+      "state_code",
+      "customers"
+    ],
+    "rows": [
+      [
+        "DL",
+        1
+      ],
+      [
+        "KA",
+        2
+      ],
+      [
+        "MH",
+        3
+      ],
+      [
+        "TN",
+        1
+      ]
+    ]
+  },
+  {
+    "question": "Who is the newest customer?",
+    "sql": "SELECT cust_nm AS customer_name,crtd_dt AS created_date FROM cust_mst ORDER BY crtd_dt DESC LIMIT 1",
+    "columns": [
+      "customer_name",
+      "created_date"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        "2025-05-05"
+      ]
+    ]
+  },
+  {
+    "question": "How many products are there?",
+    "sql": "SELECT COUNT(*) AS product_count FROM prod_mst",
+    "columns": [
+      "product_count"
+    ],
+    "rows": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "question": "What are all product names?",
+    "sql": "SELECT prod_nm AS product_name FROM prod_mst ORDER BY prod_nm",
+    "columns": [
+      "product_name"
+    ],
+    "rows": [
+      [
+        "LED Monitor 24"
+      ],
+      [
+        "Laptop 14 inch"
+      ],
+      [
+        "Mechanical Keyboard"
+      ],
+      [
+        "Office Chair"
+      ],
+      [
+        "Wireless Mouse"
+      ]
+    ]
+  },
+  {
+    "question": "What is the most expensive product?",
+    "sql": "SELECT prod_nm AS product_name,unit_prc AS price FROM prod_mst ORDER BY unit_prc DESC LIMIT 1",
+    "columns": [
+      "product_name",
+      "price"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        62000.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the cheapest product?",
+    "sql": "SELECT prod_nm AS product_name,unit_prc AS price FROM prod_mst ORDER BY unit_prc LIMIT 1",
+    "columns": [
+      "product_name",
+      "price"
+    ],
+    "rows": [
+      [
+        "Wireless Mouse",
+        799.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the average product price?",
+    "sql": "SELECT ROUND(AVG(unit_prc),2) AS average_price FROM prod_mst",
+    "columns": [
+      "average_price"
+    ],
+    "rows": [
+      [
+        17399.8
+      ]
+    ]
+  },
+  {
+    "question": "How many products are in each category?",
+    "sql": "SELECT cat_cd AS category,COUNT(*) AS products FROM prod_mst GROUP BY cat_cd ORDER BY cat_cd",
+    "columns": [
+      "category",
+      "products"
+    ],
+    "rows": [
+      [
+        "ACCS",
+        2
+      ],
+      [
+        "ELEC",
+        2
+      ],
+      [
+        "FURN",
+        1
+      ]
+    ]
+  },
+  {
+    "question": "Which products cost over 10000?",
+    "sql": "SELECT prod_nm AS product_name,unit_prc AS price FROM prod_mst WHERE unit_prc>10000 ORDER BY unit_prc DESC",
+    "columns": [
+      "product_name",
+      "price"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        62000.0
+      ],
+      [
+        "LED Monitor 24",
+        11500.0
+      ]
+    ]
+  },
+  {
+    "question": "Which products cost under 5000?",
+    "sql": "SELECT prod_nm AS product_name,unit_prc AS price FROM prod_mst WHERE unit_prc<5000 ORDER BY unit_prc",
+    "columns": [
+      "product_name",
+      "price"
+    ],
+    "rows": [
+      [
+        "Wireless Mouse",
+        799.0
+      ],
+      [
+        "Mechanical Keyboard",
+        4200.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the total price of all products?",
+    "sql": "SELECT ROUND(SUM(unit_prc),2) AS total_price FROM prod_mst",
+    "columns": [
+      "total_price"
+    ],
+    "rows": [
+      [
+        86999.0
+      ]
+    ]
+  },
+  {
+    "question": "How many orders are there?",
+    "sql": "SELECT COUNT(*) AS order_count FROM ord_txn",
+    "columns": [
+      "order_count"
+    ],
+    "rows": [
+      [
+        10
+      ]
+    ]
+  },
+  {
+    "question": "How many delivered orders are there?",
+    "sql": "SELECT COUNT(*) AS delivered_orders FROM ord_txn WHERE stat_cd=3",
+    "columns": [
+      "delivered_orders"
+    ],
+    "rows": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "question": "How many pending orders are there?",
+    "sql": "SELECT COUNT(*) AS pending_orders FROM ord_txn WHERE stat_cd=1",
+    "columns": [
+      "pending_orders"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "question": "How many processing orders are there?",
+    "sql": "SELECT COUNT(*) AS processing_orders FROM ord_txn WHERE stat_cd=2",
+    "columns": [
+      "processing_orders"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "question": "How many cancelled orders are there?",
+    "sql": "SELECT COUNT(*) AS cancelled_orders FROM ord_txn WHERE stat_cd=4",
+    "columns": [
+      "cancelled_orders"
+    ],
+    "rows": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "question": "What is the total order amount?",
+    "sql": "SELECT ROUND(SUM(amt),2) AS total_amount FROM ord_txn",
+    "columns": [
+      "total_amount"
+    ],
+    "rows": [
+      [
+        314292.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the average order amount?",
+    "sql": "SELECT ROUND(AVG(amt),2) AS average_amount FROM ord_txn",
+    "columns": [
+      "average_amount"
+    ],
+    "rows": [
+      [
+        31429.2
+      ]
+    ]
+  },
+  {
+    "question": "What is the largest order?",
+    "sql": "SELECT ord_id AS order_id,amt AS amount FROM ord_txn ORDER BY amt DESC LIMIT 1",
+    "columns": [
+      "order_id",
+      "amount"
+    ],
+    "rows": [
+      [
+        5008,
+        124000.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the smallest order?",
+    "sql": "SELECT ord_id AS order_id,amt AS amount FROM ord_txn ORDER BY amt LIMIT 1",
+    "columns": [
+      "order_id",
+      "amount"
+    ],
+    "rows": [
+      [
+        5002,
+        2397.0
+      ]
+    ]
+  },
+  {
+    "question": "Show all orders by date.",
+    "sql": "SELECT ord_id AS order_id,ord_dt AS order_date,amt AS amount FROM ord_txn ORDER BY ord_dt",
+    "columns": [
+      "order_id",
+      "order_date",
+      "amount"
+    ],
+    "rows": [
+      [
+        5004,
+        "2025-01-22",
+        8500.0
+      ],
+      [
+        5001,
+        "2025-02-11",
+        62000.0
+      ],
+      [
+        5002,
+        "2025-03-04",
+        2397.0
+      ],
+      [
+        5005,
+        "2025-04-08",
+        62000.0
+      ],
+      [
+        5003,
+        "2025-05-19",
+        23000.0
+      ],
+      [
+        5006,
+        "2025-06-01",
+        8400.0
+      ],
+      [
+        5007,
+        "2025-06-15",
+        11500.0
+      ],
+      [
+        5008,
+        "2025-07-02",
+        124000.0
+      ],
+      [
+        5009,
+        "2025-07-11",
+        3995.0
+      ],
+      [
+        5010,
+        "2025-07-20",
+        8500.0
+      ]
+    ]
+  },
+  {
+    "question": "Show the five biggest orders.",
+    "sql": "SELECT ord_id AS order_id,amt AS amount FROM ord_txn ORDER BY amt DESC LIMIT 5",
+    "columns": [
+      "order_id",
+      "amount"
+    ],
+    "rows": [
+      [
+        5008,
+        124000.0
+      ],
+      [
+        5001,
+        62000.0
+      ],
+      [
+        5005,
+        62000.0
+      ],
+      [
+        5003,
+        23000.0
+      ],
+      [
+        5007,
+        11500.0
+      ]
+    ]
+  },
+  {
+    "question": "How many orders are in each status?",
+    "sql": "SELECT stat_cd AS status_code,COUNT(*) AS orders FROM ord_txn GROUP BY stat_cd ORDER BY stat_cd",
+    "columns": [
+      "status_code",
+      "orders"
+    ],
+    "rows": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        1
+      ]
+    ]
+  },
+  {
+    "question": "How many units were ordered?",
+    "sql": "SELECT SUM(qty) AS units_ordered FROM ord_txn",
+    "columns": [
+      "units_ordered"
+    ],
+    "rows": [
+      [
+        19
+      ]
+    ]
+  },
+  {
+    "question": "Which customer spent the most?",
+    "sql": "SELECT c.cust_nm AS customer_name,ROUND(SUM(o.amt),2) AS total_spent FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id GROUP BY c.cust_id,c.cust_nm ORDER BY total_spent DESC LIMIT 1",
+    "columns": [
+      "customer_name",
+      "total_spent"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        124000.0
+      ]
+    ]
+  },
+  {
+    "question": "How much did each customer spend?",
+    "sql": "SELECT c.cust_nm AS customer_name,ROUND(SUM(o.amt),2) AS total_spent FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id GROUP BY c.cust_id,c.cust_nm ORDER BY total_spent DESC",
+    "columns": [
+      "customer_name",
+      "total_spent"
+    ],
+    "rows": [
+      [
+        "Arjun Deshmukh",
+        124000.0
+      ],
+      [
+        "Rahul Verma",
+        93500.0
+      ],
+      [
+        "Sneha Iyer",
+        62000.0
+      ],
+      [
+        "Amit Shah",
+        13897.0
+      ],
+      [
+        "Priya Nair",
+        8500.0
+      ],
+      [
+        "Vikram Singh",
+        8400.0
+      ],
+      [
+        "Kavya Reddy",
+        3995.0
+      ]
+    ]
+  },
+  {
+    "question": "How many orders did each customer place?",
+    "sql": "SELECT c.cust_nm AS customer_name,COUNT(*) AS orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id GROUP BY c.cust_id,c.cust_nm ORDER BY orders DESC",
+    "columns": [
+      "customer_name",
+      "orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        3
+      ],
+      [
+        "Amit Shah",
+        2
+      ],
+      [
+        "Priya Nair",
+        1
+      ],
+      [
+        "Sneha Iyer",
+        1
+      ],
+      [
+        "Vikram Singh",
+        1
+      ],
+      [
+        "Kavya Reddy",
+        1
+      ],
+      [
+        "Arjun Deshmukh",
+        1
+      ]
+    ]
+  },
+  {
+    "question": "Which customer placed the most orders?",
+    "sql": "SELECT c.cust_nm AS customer_name,COUNT(*) AS orders FROM ord_txn o JOIN cust_mst c ON c.cust_id=o.cust_id GROUP BY c.cust_id,c.cust_nm ORDER BY orders DESC LIMIT 1",
+    "columns": [
+      "customer_name",
+      "orders"
+    ],
+    "rows": [
+      [
+        "Rahul Verma",
+        3
+      ]
+    ]
+  },
+  {
+    "question": "How many employees are there?",
+    "sql": "SELECT COUNT(*) AS employee_count FROM emp_rec",
+    "columns": [
+      "employee_count"
+    ],
+    "rows": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "question": "What are all employee names?",
+    "sql": "SELECT emp_nm AS employee_name FROM emp_rec ORDER BY emp_nm",
+    "columns": [
+      "employee_name"
+    ],
+    "rows": [
+      [
+        "Anita Rao"
+      ],
+      [
+        "Meera Joshi"
+      ],
+      [
+        "Rohit Kulkarni"
+      ],
+      [
+        "Sanjay Patil"
+      ]
+    ]
+  },
+  {
+    "question": "Who has the highest salary?",
+    "sql": "SELECT emp_nm AS employee_name,sal AS salary FROM emp_rec ORDER BY sal DESC LIMIT 1",
+    "columns": [
+      "employee_name",
+      "salary"
+    ],
+    "rows": [
+      [
+        "Rohit Kulkarni",
+        120000.0
+      ]
+    ]
+  },
+  {
+    "question": "Who has the lowest salary?",
+    "sql": "SELECT emp_nm AS employee_name,sal AS salary FROM emp_rec ORDER BY sal LIMIT 1",
+    "columns": [
+      "employee_name",
+      "salary"
+    ],
+    "rows": [
+      [
+        "Sanjay Patil",
+        67000.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the average employee salary?",
+    "sql": "SELECT ROUND(AVG(sal),2) AS average_salary FROM emp_rec",
+    "columns": [
+      "average_salary"
+    ],
+    "rows": [
+      [
+        91000.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the total salary expense?",
+    "sql": "SELECT SUM(sal) AS total_salary FROM emp_rec",
+    "columns": [
+      "total_salary"
+    ],
+    "rows": [
+      [
+        364000.0
+      ]
+    ]
+  },
+  {
+    "question": "How many employees are in each department?",
+    "sql": "SELECT dept_cd AS department,COUNT(*) AS employees FROM emp_rec GROUP BY dept_cd ORDER BY dept_cd",
+    "columns": [
+      "department",
+      "employees"
+    ],
+    "rows": [
+      [
+        "OPS",
+        1
+      ],
+      [
+        "SALES",
+        2
+      ],
+      [
+        "TECH",
+        1
+      ]
+    ]
+  },
+  {
+    "question": "Who earns more than 80000?",
+    "sql": "SELECT emp_nm AS employee_name,sal AS salary FROM emp_rec WHERE sal>80000 ORDER BY sal DESC",
+    "columns": [
+      "employee_name",
+      "salary"
+    ],
+    "rows": [
+      [
+        "Rohit Kulkarni",
+        120000.0
+      ],
+      [
+        "Anita Rao",
+        92000.0
+      ],
+      [
+        "Meera Joshi",
+        85000.0
+      ]
+    ]
+  },
+  {
+    "question": "Who joined first?",
+    "sql": "SELECT emp_nm AS employee_name,join_dt AS join_date FROM emp_rec ORDER BY join_dt LIMIT 1",
+    "columns": [
+      "employee_name",
+      "join_date"
+    ],
+    "rows": [
+      [
+        "Rohit Kulkarni",
+        "2020-03-15"
+      ]
+    ]
+  },
+  {
+    "question": "Who joined most recently?",
+    "sql": "SELECT emp_nm AS employee_name,join_dt AS join_date FROM emp_rec ORDER BY join_dt DESC LIMIT 1",
+    "columns": [
+      "employee_name",
+      "join_date"
+    ],
+    "rows": [
+      [
+        "Sanjay Patil",
+        "2023-01-30"
+      ]
+    ]
+  },
+  {
+    "question": "Which products have been ordered?",
+    "sql": "SELECT DISTINCT p.prod_nm AS product_name FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id ORDER BY product_name",
+    "columns": [
+      "product_name"
+    ],
+    "rows": [
+      [
+        "LED Monitor 24"
+      ],
+      [
+        "Laptop 14 inch"
+      ],
+      [
+        "Mechanical Keyboard"
+      ],
+      [
+        "Office Chair"
+      ],
+      [
+        "Wireless Mouse"
+      ]
+    ]
+  },
+  {
+    "question": "What is the most ordered product by quantity?",
+    "sql": "SELECT p.prod_nm AS product_name,SUM(o.qty) AS total_units FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm ORDER BY total_units DESC LIMIT 1",
+    "columns": [
+      "product_name",
+      "total_units"
+    ],
+    "rows": [
+      [
+        "Wireless Mouse",
+        8
+      ]
+    ]
+  },
+  {
+    "question": "Which product generated the most sales?",
+    "sql": "SELECT p.prod_nm AS product_name,ROUND(SUM(o.amt),2) AS sales FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm ORDER BY sales DESC LIMIT 1",
+    "columns": [
+      "product_name",
+      "sales"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        248000.0
+      ]
+    ]
+  },
+  {
+    "question": "What is the total sales by product?",
+    "sql": "SELECT p.prod_nm AS product_name,ROUND(SUM(o.amt),2) AS sales FROM ord_txn o JOIN prod_mst p ON p.prod_id=o.prod_id GROUP BY p.prod_id,p.prod_nm ORDER BY sales DESC",
+    "columns": [
+      "product_name",
+      "sales"
+    ],
+    "rows": [
+      [
+        "Laptop 14 inch",
+        248000.0
+      ],
+      [
+        "LED Monitor 24",
+        34500.0
+      ],
+      [
+        "Office Chair",
+        17000.0
+      ],
+      [
+        "Mechanical Keyboard",
+        8400.0
+      ],
+      [
+        "Wireless Mouse",
+        6392.0
+      ]
+    ]
+  }
+]
