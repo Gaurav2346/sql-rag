@@ -1,6 +1,7 @@
 """Lookup for the project's fixed, fast demo question set."""
 
 import json
+import os
 import re
 from pathlib import Path
 
@@ -30,3 +31,21 @@ def get_demo_questions():
 def get_demo_answer(question):
     """Return a precomputed answer for an exact normalized match."""
     return load_demo_answers().get(normalize_question(question))
+
+
+def refresh_demo_answers(conn):
+    """Recalculate saved answers after CRUD changes to the demo database."""
+    with CACHE_PATH.open(encoding="utf-8") as cache_file:
+        entries = json.load(cache_file)
+
+    for entry in entries:
+        cursor = conn.execute(entry["sql"])
+        entry["columns"] = [column[0] for column in cursor.description]
+        entry["rows"] = [list(row) for row in cursor.fetchall()]
+
+    temporary_path = CACHE_PATH.with_suffix(".json.tmp")
+    temporary_path.write_text(
+        json.dumps(entries, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    os.replace(temporary_path, CACHE_PATH)

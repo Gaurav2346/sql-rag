@@ -982,7 +982,13 @@ Run in order:
 ```bash
 python setup_db.py
 python make_big_db.py
+python populate_big_db.py
 ```
+
+`populate_big_db.py` preserves starter records and sets the core tables to
+5,000 customers, 3,000 products, 12,000 orders, and 1,500 employees. Other
+tables are filled to 5,000 rows. Generated dates span 2020-01-01 through today.
+The script is safe to rerun and refreshes saved demo answers after seeding.
 
 The small database contains core populated tables such as:
 - `cust_mst`
@@ -1294,6 +1300,7 @@ Feature flags default to OFF so each component can be tested independently.
 | `config.py` | No | Central configuration and feature flags |
 | `setup_db.py` | Once | Creates the small demo DB |
 | `make_big_db.py` | Once | Creates the large enterprise-style DB |
+| `populate_big_db.py` | Once or after resetting `big.db` | Seeds core table totals and fills the remaining tables |
 | `indexer.py` | When rebuilding | Builds schema and value indexes |
 | `value_mappings.py` | No | Aliases for encoded DB values |
 | `week2.py` | Yes | Main agentic SQL pipeline |
