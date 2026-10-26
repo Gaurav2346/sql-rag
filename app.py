@@ -12,6 +12,7 @@ from demo_cache import (
 )
 from auth import (
     apply_style,
+    logout_user,
     require_login,
 )
 
@@ -173,10 +174,11 @@ def render_crud_table(conn, title, definition):
     page_count = max(1, (record_count + page_size - 1) // page_size)
     page_options = list(range(1, page_count + 1))
     selected_page = st.selectbox(
-        "Data page",
+        "Browse records",
         page_options,
         format_func=lambda page: f"Page {page} of {page_count}",
         key=f"crud_page_{table}",
+        help=f"Showing {page_size} records per page so large tables stay responsive.",
     )
     offset = (selected_page - 1) * page_size
     records = conn.execute(
@@ -189,21 +191,32 @@ def render_crud_table(conn, title, definition):
 
     first_record = offset + 1 if record_count else 0
     last_record = min(offset + len(records), record_count)
-    st.subheader(f"{title} ({record_count:,} records)")
-    st.caption(
-        f"Showing records {first_record:,}–{last_record:,}. "
-        "Use the page selector to browse the full table."
+    st.markdown(f"### {title} records")
+    st.caption(f"Showing {first_record:,}–{last_record:,} of {record_count:,}. Browse using the page selector above.")
+    search = st.text_input(
+        "Filter this page",
+        placeholder=f"Search these {len(records):,} records…",
+        key=f"crud_search_{table}",
+        label_visibility="collapsed",
     )
+    display_records = pd.DataFrame(records, columns=columns)
+    if search.strip() and not display_records.empty:
+        matching = display_records.astype(str).apply(
+            lambda column: column.str.contains(search.strip(), case=False, na=False)
+        ).any(axis=1)
+        display_records = display_records.loc[matching]
+    st.caption(f"{len(display_records):,} matching record(s) on this page")
     st.dataframe(
-        pd.DataFrame(records, columns=columns),
+        display_records,
         use_container_width=True,
         hide_index=True,
     )
 
-    add_col, edit_col, delete_col = st.columns(3)
-    with add_col:
+    add_tab, edit_tab, delete_tab = st.tabs(["＋ Add record", "✎ Edit record", "⌫ Delete record"])
+    with add_tab:
         with st.form(f"add_{table}"):
-            st.markdown(f"**Add {definition['label']}**")
+            st.markdown(f"#### Create a {definition['label']}")
+            st.caption("Enter the details below. The database will assign the record ID automatically.")
             new_values = [
                 form_field(conn, field, key=f"add_{table}_{field[0]}")
                 for field in fields
@@ -222,9 +235,10 @@ def render_crud_table(conn, title, definition):
                 except sqlite3.Error as error:
                     st.error(f"Could not create record: {error}")
 
-    with edit_col:
+    with edit_tab:
         with st.form(f"edit_{table}"):
-            st.markdown(f"**Edit {definition['label']}**")
+            st.markdown(f"#### Update a {definition['label']}")
+            st.caption("Choose a record from the current page, make changes, and save.")
             selected_id = None
             edited_values = []
             if records:
@@ -268,9 +282,10 @@ def render_crud_table(conn, title, definition):
                 except sqlite3.Error as error:
                     st.error(f"Could not update record: {error}")
 
-    with delete_col:
+    with delete_tab:
         with st.form(f"delete_{table}"):
-            st.markdown(f"**Delete {definition['label']}**")
+            st.markdown(f"#### Remove a {definition['label']}")
+            st.caption("Deletion is permanent. Records referenced by existing orders are protected.")
             if records:
                 selected_delete_id = st.selectbox(
                     f"Select {definition['label']} to delete",
@@ -504,7 +519,8 @@ feature_defaults = {
     "feature_abstention": True,
 }
 for feature_key, default_value in feature_defaults.items():
-    st.session_state.setdefault(feature_key, default_value)
+    # Keep the demo pipeline fully enabled for every run of the app.
+    st.session_state[feature_key] = default_value
 
 header_title, settings_col, profile_col = st.columns([8, 1, 1])
 with header_title:
@@ -517,24 +533,24 @@ with header_title:
 with settings_col:
     with st.popover("⚙️ Settings"):
         st.subheader("Pipeline Settings")
-        st.caption("Choose which AI pipeline features to use.")
+        st.caption("All pipeline features are enabled for this demo.")
         schema_retrieval = st.toggle(
-            "Schema Retrieval", key="feature_schema_retrieval"
+            "Schema Retrieval", key="feature_schema_retrieval", disabled=True
         )
         value_retrieval = st.toggle(
-            "Value Retrieval", key="feature_value_retrieval"
+            "Value Retrieval", key="feature_value_retrieval", disabled=True
         )
         self_correction = st.toggle(
-            "Self-Correction", key="feature_self_correction"
+            "Self-Correction", key="feature_self_correction", disabled=True
         )
         safety_check = st.toggle(
-            "SQL Safety", key="feature_safety_check"
+            "SQL Safety", key="feature_safety_check", disabled=True
         )
         hybrid_bm25 = st.toggle(
-            "Hybrid BM25", key="feature_hybrid_bm25"
+            "Hybrid BM25", key="feature_hybrid_bm25", disabled=True
         )
         abstention = st.toggle(
-            "Calibrated Abstention", key="feature_abstention"
+            "Calibrated Abstention", key="feature_abstention", disabled=True
         )
         st.divider()
         st.success("Database connected")
@@ -557,7 +573,7 @@ with profile_col:
         except sqlite3.Error:
             st.caption("Account details are unavailable.")
         if st.button("Log out", key="profile_logout", use_container_width=True):
-            st.session_state.clear()
+            logout_user()
             st.rerun()
 
 st.caption(
@@ -707,12 +723,31 @@ with dashboard_tab:
 
 
 with data_tab:
-    st.header("Create, Read, Update, Delete")
-    st.caption(
-        "Manage the populated customer, product, order, and employee tables. "
-        "Dashboard totals and saved demo answers refresh after each change."
+    st.markdown(
+        "<span class='app-eyebrow'>DATA WORKSPACE · CRUD</span>",
+        unsafe_allow_html=True,
     )
-    selected_table = st.selectbox("Choose a data table", list(CRUD_TABLES))
+    st.title("Manage your data")
+    st.caption("Browse business records, make changes, and keep your dashboard in sync.")
+
+    summary_cols = st.columns(4)
+    for column, (table_name, definition) in zip(summary_cols, CRUD_TABLES.items()):
+        total = crud_conn.execute(
+            f"SELECT COUNT(*) FROM {definition['table']}"
+        ).fetchone()[0]
+        column.metric(table_name, f"{total:,}", "Live records")
+
+    st.markdown("#### Choose a dataset")
+    table_icons = {"Customers": "👥", "Products": "📦", "Orders": "🧾", "Employees": "🧑‍💼"}
+    selected_table = st.radio(
+        "Choose a dataset",
+        list(CRUD_TABLES),
+        horizontal=True,
+        format_func=lambda name: f"{table_icons[name]}  {name}",
+        label_visibility="collapsed",
+        key="crud_dataset_picker",
+    )
+    st.divider()
     render_crud_table(crud_conn, selected_table, CRUD_TABLES[selected_table])
 
 

@@ -72,6 +72,17 @@ def _conn():
         """
     )
 
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS login_sessions (
+            token_hash TEXT PRIMARY KEY,
+            username TEXT NOT NULL COLLATE NOCASE,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+        )
+        """
+    )
+
     return conn
 
 
@@ -220,6 +231,46 @@ def check_login(
         return username
 
     return None
+
+
+def create_login_session(username):
+    """Create a revocable login token that survives a browser refresh."""
+    token = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    with _conn() as conn:
+        conn.execute(
+            "INSERT INTO login_sessions (token_hash, username) VALUES (?, ?)",
+            (token_hash, username),
+        )
+    return token
+
+
+def get_login_session(token):
+    if not token:
+        return None
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    with _conn() as conn:
+        row = conn.execute(
+            "SELECT username FROM login_sessions WHERE token_hash = ?",
+            (token_hash,),
+        ).fetchone()
+    return row[0] if row else None
+
+
+def revoke_login_session(token):
+    if not token:
+        return
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    with _conn() as conn:
+        conn.execute("DELETE FROM login_sessions WHERE token_hash = ?", (token_hash,))
+
+
+def logout_user():
+    token = st.query_params.get("auth")
+    revoke_login_session(token)
+    st.session_state.clear()
+    if "auth" in st.query_params:
+        del st.query_params["auth"]
 
 
 # ============================================================
@@ -1443,6 +1494,8 @@ def _login_page():
 
                     st.session_state.user = user
                     st.session_state.fails = 0
+                    token = create_login_session(user)
+                    st.query_params["auth"] = token
 
                     st.rerun()
 
@@ -1545,6 +1598,11 @@ def _login_page():
 def require_login():
 
     if not st.session_state.get("user"):
+        restored_user = get_login_session(st.query_params.get("auth"))
+        if restored_user:
+            st.session_state.user = restored_user
+
+    if not st.session_state.get("user"):
 
         _login_page()
 
@@ -1566,6 +1624,5 @@ def sidebar_user():
         use_container_width=True,
     ):
 
-        st.session_state.clear()
-
+        logout_user()
         st.rerun()
