@@ -854,23 +854,10 @@ div[data-testid="stFormSubmitButton"] button:active {
 
 _LOGIN = """
 .stApp {
-
     background:
-        linear-gradient(
-            -45deg,
-            #0f172a,
-            #3730a3,
-            #7c3aed,
-            #dc2626,
-            #f97316,
-            #0284c7,
-            #0f172a
-        );
-
-    background-size: 500% 500%;
-
-    animation: ombre 20s ease infinite;
-
+        radial-gradient(ellipse at 12% 10%, rgba(97, 82, 205, .24), transparent 36%),
+        radial-gradient(ellipse at 90% 84%, rgba(25, 143, 168, .18), transparent 34%),
+        linear-gradient(145deg, #0b1020 0%, #11172a 52%, #0c1420 100%);
     color: #fff;
 }
 
@@ -882,165 +869,135 @@ _LOGIN = """
 
     position: relative;
     z-index: 1;
-
-    padding-top: 2rem;
-
-    max-width: 620px;
+    width: min(100%, 680px);
+    padding: 2.2rem 1.25rem 3rem;
 }
 
 .auth-hero {
-
     text-align: center;
-
-    margin:
-        1rem
-        0
-        1.4rem;
-
-    animation:
-        rise .9s ease both;
+    margin: 1rem 0 1.65rem;
+    animation: rise .65s ease both;
 }
 
 .auth-logo {
-
-    font-size: 3.4rem;
-
+    font-size: 3rem;
     display: inline-block;
-
-    animation:
-        floaty 3.2s ease-in-out infinite;
-
-    filter:
-        drop-shadow(
-            0 8px 18px
-            rgba(0,0,0,.35)
-        );
+    animation: floaty 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.3));
 }
 
 .auth-hero h1 {
-
-    margin:
-        .3rem
-        0
-        .4rem;
-
+    margin: .55rem 0 .55rem;
     font-weight: 800;
-
-    letter-spacing:
-        -.5px;
-
-    font-size: 2rem;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff,
-            #fed7aa,
-            #fde68a,
-            #a5f3fc,
-            #ddd6fe,
-            #fff
-        );
-
-    background-size: 200% auto;
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
+    letter-spacing: -.035em;
+    font-size: clamp(1.75rem, 5vw, 2.35rem);
+    color: #f5f4ff;
 }
 
 .auth-hero p {
-
-    color:
-        rgba(255,255,255,.8);
-
+    color: #b8bfd2;
     margin: 0;
+    line-height: 1.6;
 }
 
 div[data-testid="stForm"] {
-
     position: relative;
-
-    overflow: hidden;
-
-    padding: 1.8rem;
-
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.22),
-            rgba(255,255,255,.06)
-        );
-
-    backdrop-filter:
-        blur(24px)
-        saturate(170%);
-
-    -webkit-backdrop-filter:
-        blur(24px)
-        saturate(170%);
-
-    border:
-        1px solid
-        rgba(255,255,255,.38);
-
-    box-shadow:
-        0 18px 50px
-        rgba(0,0,0,.32),
-
-        inset 0 1.5px 0
-        rgba(255,255,255,.65);
+    padding: 1.6rem;
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(24, 30, 49, .96), rgba(17, 23, 39, .94));
+    border: 1px solid rgba(161, 151, 229, .24);
+    box-shadow: 0 22px 54px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.06);
 }
 
 label,
 label p,
 .stTextInput label p {
-
-    color: #fff !important;
-
-    font-weight: 500;
+    color: #e7e9f4 !important;
+    font-weight: 600;
 }
 
 div[data-baseweb="input"] {
+    background: #101626 !important;
+    border-radius: 12px !important;
+    border: 1px solid #343d56 !important;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
 
-    background:
-        rgba(255,255,255,.16)
-        !important;
-
-    border-radius:
-        14px !important;
-
-    border:
-        1px solid
-        rgba(255,255,255,.3)
-        !important;
+div[data-baseweb="input"]:focus-within {
+    border-color: #9a8cff !important;
+    box-shadow: 0 0 0 3px rgba(130, 112, 255, .17);
 }
 
 .stTextInput input {
-
-    color: #fff !important;
-
-    -webkit-text-fill-color:
-        #fff;
+    color: #f5f6fc !important;
+    -webkit-text-fill-color: #f5f6fc;
 }
 
 .stTextInput input::placeholder {
-
-    color:
-        rgba(255,255,255,.55)
-        !important;
-
-    -webkit-text-fill-color:
-        rgba(255,255,255,.55);
+    color: #838ba2 !important;
+    -webkit-text-fill-color: #838ba2;
 }
 
 div[data-testid="stAlert"] {
+    border-radius: 14px;
+    border: 1px solid rgba(245, 122, 137, .32);
+    background: rgba(112, 34, 56, .2);
+    color: #ffe3e7;
+}
 
-    border-radius:
-        16px;
+div[data-testid="stTabs"] button[role="tab"] {
+    padding: .8rem 1.1rem;
+    color: #bfc5d7;
+    transition: color .18s ease, background .18s ease;
+}
+
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+    color: #d8d1ff;
+    border-bottom-color: #9b8cff;
+}
+
+.stButton > button {
+    color: #dce0ef !important;
+    background: rgba(255,255,255,.045) !important;
+    border: 1px solid rgba(171, 179, 204, .2) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: transform .18s ease, background .18s ease, border-color .18s ease !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px) !important;
+    color: #fff !important;
+    background: rgba(255,255,255,.09) !important;
+    border-color: rgba(171, 158, 255, .5) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.2) !important;
+}
+
+div[data-testid="stFormSubmitButton"] button {
+    min-height: 3.1rem;
+    color: #fff !important;
+    background: linear-gradient(100deg, #6758d8, #8066e9) !important;
+    border: 1px solid rgba(197, 188, 255, .24) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 9px 24px rgba(94, 75, 191, .27) !important;
+    animation: none !important;
+    transition: transform .18s ease, filter .18s ease, box-shadow .18s ease !important;
+}
+
+div[data-testid="stFormSubmitButton"] button:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.08);
+    box-shadow: 0 13px 28px rgba(94, 75, 191, .36) !important;
+}
+
+@media (max-width: 600px) {
+    .block-container { padding: 1.25rem .8rem 2rem; }
+    div[data-testid="stForm"] { padding: 1.15rem; border-radius: 18px; }
+    .auth-hero { margin-top: .4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-logo, .auth-hero, div[data-testid="stForm"] { animation: none !important; }
 }
 """
 

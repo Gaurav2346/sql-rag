@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import date as date_type
+from textwrap import dedent
 
 import pandas as pd
 import streamlit as st
@@ -197,6 +198,24 @@ def get_table_inventory(conn):
             "Primary key": ", ".join(primary_keys) if primary_keys else "rowid",
         })
     return pd.DataFrame(inventory)
+
+
+def render_dashboard_cards(items, layout):
+    cards = "".join(
+        dedent(f"""\
+        <article class="dashboard-stat-card {accent}">
+            <div class="dashboard-stat-top">
+                <span class="dashboard-stat-icon">{icon}</span>
+                <span class="dashboard-stat-tag">LIVE</span>
+            </div>
+            <div class="dashboard-stat-label">{label}</div>
+            <div class="dashboard-stat-value">{value}</div>
+            <div class="dashboard-stat-foot"><span>●</span>{description}</div>
+        </article>
+        """).strip()
+        for icon, label, value, description, accent in items
+    )
+    st.html(f'<div class="dashboard-card-grid {layout}">{cards}</div>')
 
 
 def generic_form_field(column, value=None, key="generic_field"):
@@ -588,6 +607,154 @@ st.markdown(
         to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes view-arrive {
+        from { opacity: 0; transform: translateY(16px) scale(.992); filter: blur(3px); }
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    @keyframes result-glow {
+        0%, 100% { box-shadow: 0 0 0 rgba(139, 92, 246, 0); }
+        50% { box-shadow: 0 0 24px rgba(139, 92, 246, .12); }
+    }
+
+    @keyframes card-shimmer {
+        from { transform: translateX(-130%) rotate(18deg); }
+        to { transform: translateX(260%) rotate(18deg); }
+    }
+
+    .dashboard-card-grid {
+        display: grid;
+        gap: 1rem;
+        margin: .35rem 0 1.15rem;
+    }
+
+    .dashboard-card-grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .dashboard-card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dashboard-card-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .dashboard-stat-card {
+        --card-accent: #a78bfa;
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        min-height: 158px;
+        padding: 1.1rem 1.2rem 1rem;
+        border: 1px solid color-mix(in srgb, var(--card-accent) 42%, transparent);
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at 95% 0%, color-mix(in srgb, var(--card-accent) 22%, transparent), transparent 42%),
+            linear-gradient(145deg, rgba(30, 34, 54, .96), rgba(25, 27, 39, .96) 58%, rgba(37, 29, 40, .96));
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .22), inset 0 1px rgba(255,255,255,.07);
+        animation: soft-enter .62s cubic-bezier(.2,.7,.25,1) both;
+        transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+    }
+
+    .dashboard-stat-card::before {
+        position: absolute;
+        z-index: 1;
+        top: -70%;
+        left: -28%;
+        width: 35%;
+        height: 240%;
+        content: "";
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .dashboard-stat-card:hover {
+        transform: translateY(-5px);
+        border-color: color-mix(in srgb, var(--card-accent) 78%, white);
+        box-shadow: 0 20px 42px rgba(0,0,0,.32), 0 0 26px color-mix(in srgb, var(--card-accent) 18%, transparent), inset 0 1px rgba(255,255,255,.1);
+    }
+
+    .dashboard-stat-card:hover::before { opacity: 1; animation: card-shimmer .8s ease; }
+    .dashboard-stat-card.violet { --card-accent: #a78bfa; }
+    .dashboard-stat-card.cyan { --card-accent: #67d8e8; }
+    .dashboard-stat-card.orange { --card-accent: #ffae70; }
+    .dashboard-stat-card.green { --card-accent: #62dfae; }
+    .dashboard-stat-card.pink { --card-accent: #f18fc5; }
+    .dashboard-stat-card.blue { --card-accent: #78aaff; }
+
+    .dashboard-stat-top, .dashboard-stat-label, .dashboard-stat-value, .dashboard-stat-foot { position: relative; z-index: 2; }
+    .dashboard-stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: .9rem; }
+    .dashboard-stat-icon {
+        display: grid;
+        width: 2.45rem;
+        height: 2.45rem;
+        place-items: center;
+        border: 1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
+        border-radius: 13px;
+        background: color-mix(in srgb, var(--card-accent) 14%, transparent);
+        font-size: 1.15rem;
+    }
+    .dashboard-stat-tag { color: color-mix(in srgb, var(--card-accent) 76%, white); font-size: .65rem; font-weight: 750; letter-spacing: .13em; }
+    .dashboard-stat-label { color: #c9c9d7; font-size: .91rem; font-weight: 600; }
+    .dashboard-stat-value { margin-top: .1rem; color: #faf9ff; font-size: clamp(1.65rem, 2.3vw, 2.35rem); font-weight: 750; letter-spacing: -.045em; line-height: 1.2; overflow-wrap: anywhere; }
+    .dashboard-stat-foot { display: flex; align-items: center; gap: .42rem; margin-top: .55rem; color: #a9a9ba; font-size: .76rem; }
+    .dashboard-stat-foot span { color: var(--card-accent); font-size: .7rem; }
+
+    @media (max-width: 1050px) {
+        .dashboard-card-grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 620px) {
+        .dashboard-card-grid.four, .dashboard-card-grid.three, .dashboard-card-grid.two { grid-template-columns: 1fr; }
+        .dashboard-stat-card { min-height: 142px; }
+    }
+
+    /* A gentle entrance when moving between Dashboard, Ask, and Data views. */
+    div[data-testid="stTabs"] [role="tabpanel"] > div {
+        animation: view-arrive .58s cubic-bezier(.2,.7,.25,1) both;
+    }
+
+    /* Dashboard charts and overview tables reveal with a small lift. */
+    div[data-testid="stVegaLiteChart"],
+    div[data-testid="stArrowVegaLiteChart"],
+    div[data-testid="stPlotlyChart"],
+    div[data-testid="stDataFrame"] {
+        animation: soft-enter .68s ease both;
+        transition: transform .22s ease, box-shadow .22s ease;
+    }
+
+    div[data-testid="stVegaLiteChart"]:hover,
+    div[data-testid="stArrowVegaLiteChart"]:hover,
+    div[data-testid="stPlotlyChart"]:hover,
+    div[data-testid="stDataFrame"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(70, 60, 140, .16);
+    }
+
+    /* Ask input receives a soft highlight when the user is typing. */
+    div[data-testid="stTextInput"] input {
+        transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    div[data-testid="stTextInput"] input:focus {
+        border-color: rgba(167, 139, 250, .9);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, .18), 0 0 22px rgba(139, 92, 246, .13);
+        transform: translateY(-1px);
+    }
+
+    div[data-testid="stButton"] button[kind="primary"] {
+        transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+
+    div[data-testid="stButton"] button[kind="primary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 9px 24px rgba(124, 91, 230, .3);
+        filter: brightness(1.08);
+    }
+
+    div[data-testid="stAlert"],
+    div[data-testid="stCode"] {
+        animation: soft-enter .5s ease both;
+    }
+
+    div[data-testid="stSpinner"] {
+        animation: result-glow 1.8s ease-in-out infinite;
+        border-radius: 14px;
+    }
+
     div[data-testid="stMetric"] {
         min-height: 128px;
         border-color: rgba(157, 117, 255, .34);
@@ -828,29 +995,36 @@ with dashboard_tab:
         "SELECT COUNT(*) FROM ord_txn WHERE stat_cd = 3"
     ).fetchone()[0]
 
-    metric_cols = st.columns(4)
-    metric_cols[0].metric("Customers", f"{customer_total:,}")
-    metric_cols[1].metric("Products", f"{product_total:,}")
-    metric_cols[2].metric("Orders", f"{order_total:,}")
-    metric_cols[3].metric("Employees", f"{employee_total:,}")
+    render_dashboard_cards(
+        [
+            ("👥", "Customers", f"{customer_total:,}", "Customer records", "violet"),
+            ("📦", "Products", f"{product_total:,}", "Products in catalog", "cyan"),
+            ("🧾", "Orders", f"{order_total:,}", "Orders in the database", "orange"),
+            ("🧑‍💼", "Employees", f"{employee_total:,}", "Employee records", "green"),
+        ],
+        "four",
+    )
 
-    metric_cols = st.columns(3)
-    metric_cols[0].metric("Total Order Revenue", f"₹{revenue_total:,.2f}")
-    metric_cols[1].metric("Average Order Value", f"₹{average_order:,.2f}")
-    metric_cols[2].metric("Delivered Orders", f"{delivered_total:,}")
+    render_dashboard_cards(
+        [
+            ("↗️", "Total Order Revenue", f"₹{revenue_total:,.2f}", "Revenue across all orders", "pink"),
+            ("◉", "Average Order Value", f"₹{average_order:,.2f}", "Average revenue per order", "blue"),
+            ("✓", "Delivered Orders", f"{delivered_total:,}", "Successfully delivered", "green"),
+        ],
+        "three",
+    )
 
-    inventory_frame = get_table_inventory(conn)
-    inventory_total = int(inventory_frame["Rows"].sum()) if not inventory_frame.empty else 0
-    inventory_col, records_col = st.columns(2)
-    inventory_col.metric("Database Tables", f"{len(inventory_frame):,}")
-    records_col.metric("Records Across All Tables", f"{inventory_total:,}")
-    st.subheader("Complete Database Overview")
-    st.caption("Live row counts and schema sizes for every table in the database.")
-    st.dataframe(
-        inventory_frame,
-        use_container_width=True,
-        hide_index=True,
-        height=420,
+    dashboard_tables = get_database_tables(conn)
+    inventory_total = sum(
+        conn.execute(f"SELECT COUNT(*) FROM {quote_identifier(table_name)}").fetchone()[0]
+        for table_name in dashboard_tables
+    )
+    render_dashboard_cards(
+        [
+            ("▦", "Database Tables", f"{len(dashboard_tables):,}", "Tables in this database", "violet"),
+            ("≋", "Records Across All Tables", f"{inventory_total:,}", "Rows across all tables", "cyan"),
+        ],
+        "two",
     )
 
     chart_left, chart_right = st.columns(2)
@@ -878,6 +1052,60 @@ with dashboard_tab:
             st.line_chart(monthly_frame.set_index("month"))
         else:
             st.info("No order data yet.")
+
+    product_chart_col, state_chart_col = st.columns(2)
+    with product_chart_col:
+        st.subheader("Top Products by Revenue")
+        product_revenue = pd.read_sql_query(
+            "SELECT p.prod_nm AS product, ROUND(SUM(o.amt), 2) AS revenue "
+            "FROM ord_txn o JOIN prod_mst p ON p.prod_id = o.prod_id "
+            "GROUP BY p.prod_id, p.prod_nm ORDER BY revenue DESC LIMIT 10",
+            conn,
+        )
+        if not product_revenue.empty:
+            st.bar_chart(product_revenue.set_index("product"))
+        else:
+            st.info("Product sales will appear here when orders are available.")
+
+    with state_chart_col:
+        st.subheader("Orders by State")
+        state_orders = pd.read_sql_query(
+            "SELECT COALESCE(c.st_cd, 'Unknown') AS state, COUNT(*) AS orders "
+            "FROM ord_txn o LEFT JOIN cust_mst c ON c.cust_id = o.cust_id "
+            "GROUP BY state ORDER BY orders DESC LIMIT 10",
+            conn,
+        )
+        if not state_orders.empty:
+            st.bar_chart(state_orders.set_index("state"))
+        else:
+            st.info("Order distribution will appear here when orders are available.")
+
+    category_chart_col, department_chart_col = st.columns(2)
+    with category_chart_col:
+        st.subheader("Revenue by Product Category")
+        category_revenue = pd.read_sql_query(
+            "SELECT COALESCE(p.cat_cd, 'Uncategorized') AS category, "
+            "ROUND(SUM(o.amt), 2) AS revenue "
+            "FROM ord_txn o JOIN prod_mst p ON p.prod_id = o.prod_id "
+            "GROUP BY category ORDER BY revenue DESC",
+            conn,
+        )
+        if not category_revenue.empty:
+            st.bar_chart(category_revenue.set_index("category"))
+        else:
+            st.info("Category revenue will appear here when orders are available.")
+
+    with department_chart_col:
+        st.subheader("Employees by Department")
+        department_employees = pd.read_sql_query(
+            "SELECT COALESCE(dept_cd, 'Unassigned') AS department, COUNT(*) AS employees "
+            "FROM emp_rec GROUP BY department ORDER BY employees DESC LIMIT 10",
+            conn,
+        )
+        if not department_employees.empty:
+            st.bar_chart(department_employees.set_index("department"))
+        else:
+            st.info("Department distribution will appear here when employees are available.")
 
     lower_left, lower_right = st.columns(2)
     with lower_left:
