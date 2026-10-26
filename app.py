@@ -72,6 +72,10 @@ CRUD_TABLES = {
     },
 }
 
+CRUD_TABLES_BY_NAME = {
+    definition["table"]: definition for definition in CRUD_TABLES.values()
+}
+
 
 def field_options(conn, kind):
     if kind == "state":
@@ -163,6 +167,172 @@ def form_field(conn, field, value=None, key="field"):
 def refresh_after_mutation(conn):
     conn.commit()
     refresh_demo_answers(conn)
+
+
+def quote_identifier(identifier):
+    return '"' + str(identifier).replace('"', '""') + '"'
+
+
+def get_database_tables(conn):
+    return [
+        row[0]
+        for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name NOT LIKE 'sqlite_%' ORDER BY name"
+        ).fetchall()
+    ]
+
+
+def get_table_inventory(conn):
+    inventory = []
+    for table_name in get_database_tables(conn):
+        quoted = quote_identifier(table_name)
+        count = conn.execute(f"SELECT COUNT(*) FROM {quoted}").fetchone()[0]
+        columns = conn.execute(f"PRAGMA table_info({quoted})").fetchall()
+        primary_keys = [column[1] for column in columns if column[5]]
+        inventory.append({
+            "Table": table_name,
+            "Rows": count,
+            "Columns": len(columns),
+            "Primary key": ", ".join(primary_keys) if primary_keys else "rowid",
+        })
+    return pd.DataFrame(inventory)
+
+
+def generic_form_field(column, value=None, key="generic_field"):
+    name, declared_type = column[1], (column[2] or "TEXT").upper()
+    label = name.replace("_", " ").title()
+    if "INT" in declared_type:
+        return int(st.number_input(label, value=int(value or 0), step=1, key=key))
+    if any(part in declared_type for part in ("REAL", "FLOA", "DOUB", "NUM")):
+        return float(st.number_input(label, value=float(value or 0), key=key))
+    current = "" if value is None else str(value)
+    if len(current) > 120 or any(term in name.lower() for term in ("body", "json", "message", "desc")):
+        return st.text_area(label, value=current, key=key, height=100)
+    return st.text_input(label, value=current, key=key)
+
+
+def render_generic_table(conn, table_name):
+    quoted_table = quote_identifier(table_name)
+    columns = conn.execute(f"PRAGMA table_info({quoted_table})").fetchall()
+    column_names = [column[1] for column in columns]
+    primary_key_columns = [column for column in columns if column[5]]
+    page_size = 100
+    record_count = conn.execute(f"SELECT COUNT(*) FROM {quoted_table}").fetchone()[0]
+    page_count = max(1, (record_count + page_size - 1) // page_size)
+    selected_page = st.selectbox(
+        "Browse records",
+        list(range(1, page_count + 1)),
+        format_func=lambda page: f"Page {page} of {page_count}",
+        key=f"generic_page_{table_name}",
+    )
+    offset = (selected_page - 1) * page_size
+    rows = conn.execute(
+        f"SELECT rowid AS __rowid__, * FROM {quoted_table} ORDER BY rowid LIMIT ? OFFSET ?",
+        (page_size, offset),
+    ).fetchall()
+    display = pd.DataFrame(rows, columns=["__rowid__"] + column_names)
+    first = offset + 1 if record_count else 0
+    last = min(offset + len(rows), record_count)
+    st.markdown(f"### {table_name} records")
+    st.caption(f"{record_count:,} total records · Showing {first:,}–{last:,} · {len(columns)} columns")
+    search = st.text_input(
+        "Filter records on this page",
+        placeholder=f"Search these {len(rows):,} records…",
+        key=f"generic_search_{table_name}",
+        label_visibility="collapsed",
+    )
+    if search.strip() and not display.empty:
+        matches = display.astype(str).apply(
+            lambda series: series.str.contains(search.strip(), case=False, na=False)
+        ).any(axis=1)
+        display = display.loc[matches]
+    st.caption(f"{len(display):,} matching record(s) on this page")
+    st.dataframe(display.drop(columns=["__rowid__"], errors="ignore"), use_container_width=True, hide_index=True)
+
+    add_tab, edit_tab, delete_tab = st.tabs(["＋ Add record", "✎ Edit record", "⌫ Delete record"])
+    insert_columns = [column for column in columns if not (column[5] and "INT" in (column[2] or "").upper())]
+    with add_tab:
+        st.caption("Complete the fields to add a record to this table.")
+        with st.form(f"generic_add_{table_name}"):
+            values = [
+                generic_form_field(column, key=f"generic_add_{table_name}_{column[1]}")
+                for column in insert_columns
+            ]
+            if st.form_submit_button("Create record", type="primary"):
+                try:
+                    names = ", ".join(quote_identifier(column[1]) for column in insert_columns)
+                    placeholders = ", ".join("?" for _ in insert_columns)
+                    conn.execute(
+                        f"INSERT INTO {quoted_table} ({names}) VALUES ({placeholders})", values
+                    )
+                    refresh_after_mutation(conn)
+                    st.success(f"Record added to {table_name}.")
+                    st.rerun()
+                except sqlite3.Error as error:
+                    st.error(f"Could not create record: {error}")
+
+    with edit_tab:
+        st.caption("Select a record from this page, update its fields, and save.")
+        if rows:
+            selected_rowid = st.selectbox(
+                "Select record",
+                [row[0] for row in rows],
+                key=f"generic_edit_select_{table_name}",
+                format_func=lambda rowid: f"Record {rowid}",
+            )
+            selected_record = conn.execute(
+                f"SELECT * FROM {quoted_table} WHERE rowid = ?", (selected_rowid,)
+            ).fetchone()
+            with st.form(f"generic_edit_{table_name}"):
+                edited_values = [
+                    generic_form_field(
+                        column,
+                        selected_record[index],
+                        key=f"generic_edit_{table_name}_{selected_rowid}_{column[1]}",
+                    )
+                    for index, column in enumerate(columns)
+                    if column not in primary_key_columns
+                ]
+                editable_columns = [column for column in columns if column not in primary_key_columns]
+                if st.form_submit_button("Save changes", disabled=not editable_columns):
+                    try:
+                        assignments = ", ".join(
+                            f"{quote_identifier(column[1])} = ?" for column in editable_columns
+                        )
+                        conn.execute(
+                            f"UPDATE {quoted_table} SET {assignments} WHERE rowid = ?",
+                            edited_values + [selected_rowid],
+                        )
+                        refresh_after_mutation(conn)
+                        st.success(f"Record updated in {table_name}.")
+                        st.rerun()
+                    except sqlite3.Error as error:
+                        st.error(f"Could not update record: {error}")
+        else:
+            st.info("No records to edit yet.")
+
+    with delete_tab:
+        st.caption("Delete a record by its row ID. This action cannot be undone.")
+        if rows:
+            selected_delete_rowid = st.selectbox(
+                "Select record to delete",
+                [row[0] for row in rows],
+                key=f"generic_delete_select_{table_name}",
+                format_func=lambda rowid: f"Record {rowid}",
+            )
+            with st.form(f"generic_delete_{table_name}"):
+                confirmed = st.checkbox("I confirm this deletion", key=f"generic_delete_confirm_{table_name}")
+                if st.form_submit_button("Delete record", disabled=not confirmed):
+                    try:
+                        conn.execute(f"DELETE FROM {quoted_table} WHERE rowid = ?", (selected_delete_rowid,))
+                        refresh_after_mutation(conn)
+                        st.success(f"Record deleted from {table_name}.")
+                        st.rerun()
+                    except sqlite3.Error as error:
+                        st.error(f"Could not delete record: {error}")
+        else:
+            st.info("No records to delete yet.")
 
 
 def render_crud_table(conn, title, definition):
@@ -669,6 +839,20 @@ with dashboard_tab:
     metric_cols[1].metric("Average Order Value", f"₹{average_order:,.2f}")
     metric_cols[2].metric("Delivered Orders", f"{delivered_total:,}")
 
+    inventory_frame = get_table_inventory(conn)
+    inventory_total = int(inventory_frame["Rows"].sum()) if not inventory_frame.empty else 0
+    inventory_col, records_col = st.columns(2)
+    inventory_col.metric("Database Tables", f"{len(inventory_frame):,}")
+    records_col.metric("Records Across All Tables", f"{inventory_total:,}")
+    st.subheader("Complete Database Overview")
+    st.caption("Live row counts and schema sizes for every table in the database.")
+    st.dataframe(
+        inventory_frame,
+        use_container_width=True,
+        hide_index=True,
+        height=420,
+    )
+
     chart_left, chart_right = st.columns(2)
     with chart_left:
         st.subheader("Orders by Status")
@@ -730,25 +914,46 @@ with data_tab:
     st.title("Manage your data")
     st.caption("Browse business records, make changes, and keep your dashboard in sync.")
 
-    summary_cols = st.columns(4)
-    for column, (table_name, definition) in zip(summary_cols, CRUD_TABLES.items()):
-        total = crud_conn.execute(
-            f"SELECT COUNT(*) FROM {definition['table']}"
-        ).fetchone()[0]
-        column.metric(table_name, f"{total:,}", "Live records")
-
-    st.markdown("#### Choose a dataset")
-    table_icons = {"Customers": "👥", "Products": "📦", "Orders": "🧾", "Employees": "🧑‍💼"}
-    selected_table = st.radio(
-        "Choose a dataset",
-        list(CRUD_TABLES),
-        horizontal=True,
-        format_func=lambda name: f"{table_icons[name]}  {name}",
-        label_visibility="collapsed",
+    friendly_names = {
+        definition["table"]: name for name, definition in CRUD_TABLES.items()
+    }
+    friendly_names["usr_mst"] = "Users"
+    crud_table_order = ["cust_mst", "prod_mst", "ord_txn", "emp_rec", "usr_mst"]
+    existing_tables = set(get_database_tables(crud_conn))
+    data_tables = [
+        table_name for table_name in crud_table_order
+        if table_name in existing_tables
+    ]
+    if st.session_state.get("crud_dataset_picker") not in data_tables:
+        st.session_state["crud_dataset_picker"] = "cust_mst"
+    selected_table = st.selectbox(
+        "Choose a database table",
+        data_tables,
+        format_func=lambda table: f"{friendly_names.get(table, table)} · {table}",
         key="crud_dataset_picker",
     )
+    selected_quoted = quote_identifier(selected_table)
+    selected_count = crud_conn.execute(
+        f"SELECT COUNT(*) FROM {selected_quoted}"
+    ).fetchone()[0]
+    selected_columns = crud_conn.execute(
+        f"PRAGMA table_info({selected_quoted})"
+    ).fetchall()
+    total_rows = int(get_table_inventory(crud_conn)["Rows"].sum())
+    summary_cols = st.columns(4)
+    summary_cols[0].metric("CRUD tables", f"{len(data_tables):,}")
+    summary_cols[1].metric("Records across database", f"{total_rows:,}")
+    summary_cols[2].metric("Selected table records", f"{selected_count:,}")
+    summary_cols[3].metric("Selected table columns", f"{len(selected_columns):,}")
     st.divider()
-    render_crud_table(crud_conn, selected_table, CRUD_TABLES[selected_table])
+    if selected_table in CRUD_TABLES_BY_NAME:
+        render_crud_table(
+            crud_conn,
+            friendly_names[selected_table],
+            CRUD_TABLES_BY_NAME[selected_table],
+        )
+    else:
+        render_generic_table(crud_conn, selected_table)
 
 
 with ask_tab:
